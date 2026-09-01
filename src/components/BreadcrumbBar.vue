@@ -1,5 +1,5 @@
 <template>
-  <div class="breadcrumb-bar px-6 py-3 d-flex align-center">
+  <div v-if="breadcrumbItems.length > 0" class="breadcrumb-bar px-6 py-3 d-flex align-center">
     <v-breadcrumbs :items="breadcrumbItems" class="pa-0 font-weight-medium text-subtitle-2">
       <template #divider>
         <span class="mx-2 text-grey-medium">/</span>
@@ -34,6 +34,9 @@
     '/user/cart': '購物車',
     '/admin': '管理後台',
     '/admin/product': '商品管理',
+    '/admin/product-form': '新增商品',
+    '/admin/news': '災防知識',
+    '/admin/news-form': '新增災防知識',
     '/admin/order': '訂單管理',
     '/news': '災防知識',
     '/shop': '災防商城',
@@ -44,13 +47,43 @@
     '/disaster': '災時極簡模式',
   }
 
+  const isAdminOrUserRoute = computed(() => {
+    return route.path.startsWith('/admin') || route.path.startsWith('/user')
+  })
+
+  const rootItem = computed(() => {
+    return isAdminOrUserRoute.value
+      ? { title: '會員中心', to: '/user/order' }
+      : { title: '首頁', to: '/' }
+  })
+
   const breadcrumbItems = computed(() => {
-    const currentTitle = route.meta?.title || pathMap[route.path] || '頁面'
+    // 首頁不用顯示路徑顯示條
     if (route.path === '/') {
-      return [{ title: '首頁', to: '/' }]
+      return []
     }
+    if (route.path === '/user/order') {
+      return [{ title: '會員中心', to: '/user/order' }]
+    }
+    if (route.path === '/admin/product-form') {
+      const isEdit = Boolean(route.query.id)
+      return [
+        rootItem.value,
+        { title: '商品管理', to: '/admin/product' },
+        { title: isEdit ? '編輯商品' : '新增商品', to: route.fullPath },
+      ]
+    }
+    if (route.path === '/admin/news-form') {
+      const isEdit = Boolean(route.query.id)
+      return [
+        rootItem.value,
+        { title: '災防知識', to: '/admin/news' },
+        { title: isEdit ? '編輯災防知識' : '新增災防知識', to: route.fullPath },
+      ]
+    }
+    const currentTitle = route.meta?.title || pathMap[route.path] || '頁面'
     return [
-      { title: '首頁', to: '/' },
+      rootItem.value,
       { title: currentTitle, to: route.path },
     ]
   })

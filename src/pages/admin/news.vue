@@ -3,16 +3,16 @@
     <div class="d-flex align-center justify-space-between mb-6">
       <div class="d-flex align-center">
         <div class="title-bar mr-3"></div>
-        <h1 class="page-title">商品管理</h1>
+        <h1 class="page-title">災防知識管理</h1>
       </div>
       <v-btn
         color="secondary"
         variant="flat"
         prepend-icon="mdi-plus"
-        to="/admin/product-form"
+        to="/admin/news-form"
         class="font-weight-bold"
       >
-        新增商品
+        新增災防知識
       </v-btn>
     </div>
 
@@ -20,17 +20,21 @@
       <v-data-table
         :filter-keys="filterKeys"
         :headers="headers"
-        :items="products"
-        :loading="isLoading"
+        :items="newsStore.newsList"
         :search="search"
       >
-        <template #[`item.imageUrl`]="{ value }">
-          <v-img aspect-ratio="1/1" :src="value" width="40" class="rounded border" />
+        <template #[`item.image`]="{ value }">
+          <v-img aspect-ratio="1.3333" :src="value" width="60" class="rounded border" />
         </template>
 
-        <template #[`item.sell`]="{ value }">
-          <v-icon v-if="value" icon="mdi-check-circle" color="success" />
-          <v-icon v-else icon="mdi-close-circle" color="grey-lighten-1" />
+        <template #[`item.published`]="{ value }">
+          <v-chip
+            :color="value ? 'success' : 'grey-medium'"
+            size="small"
+            class="font-weight-bold"
+          >
+            {{ value ? '已發布' : '未發布' }}
+          </v-chip>
         </template>
 
         <template #[`item.action`]="{ item }">
@@ -39,8 +43,8 @@
             size="small"
             variant="text"
             color="secondary"
-            :to="'/admin/product-form?id=' + item._id"
-            title="編輯商品"
+            :to="'/admin/news-form?id=' + item.id"
+            title="編輯災防知識"
           />
         </template>
 
@@ -50,7 +54,7 @@
               v-model="search"
               density="compact"
               hide-details
-              placeholder="搜尋商品..."
+              placeholder="搜尋災防知識標題、分類..."
               prepend-inner-icon="mdi-magnify"
               variant="outlined"
               style="max-width: 320px;"
@@ -64,25 +68,23 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useGetAllQuery } from '@/quries/product'
+  import { useNewsStore } from '@/stores/news'
 
-  const { data: products, isLoading } = useGetAllQuery()
+  const newsStore = useNewsStore()
 
   const headers = [
-    { title: 'ID', key: '_id' },
-    { title: '圖片', key: 'imageUrl', sortable: false },
-    { title: '名稱', key: 'name' },
-    { title: '價格', key: 'price' },
+    { title: 'ID', key: 'id' },
+    { title: '封面圖片', key: 'image', sortable: false },
+    { title: '標題', key: 'title' },
     { title: '分類', key: 'category' },
-    { title: '說明', key: 'description' },
-    { title: '上架', key: 'sell' },
-    { title: '建立日期', key: 'createdAt', value: (item: any) => new Date(item.createdAt).toLocaleString() },
-    { title: '修改日期', key: 'updatedAt', value: (item: any) => new Date(item.updatedAt).toLocaleString() },
+    { title: '摘要內容', key: 'summary' },
+    { title: '發布狀態', key: 'published' },
+    { title: '發布日期', key: 'date' },
     { title: '操作', key: 'action', sortable: false },
   ]
 
   const search = ref('')
-  const filterKeys = ['_id', 'name', 'price', 'category', 'description', 'createdAt', 'updatedAt']
+  const filterKeys = ['id', 'title', 'category', 'summary', 'date']
 </script>
 
 <style scoped>
@@ -103,7 +105,7 @@
 <route lang="yaml">
 meta:
   layout: admin
-  title: 商品管理
+  title: 災防知識管理
   login: login-only
   admin: true
 </route>

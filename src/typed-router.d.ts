@@ -45,6 +45,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/admin/news': RouteRecordInfo<
+      '/admin/news',
+      '/admin/news',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/news-form': RouteRecordInfo<
+      '/admin/news-form',
+      '/admin/news-form',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/admin/order': RouteRecordInfo<
       '/admin/order',
       '/admin/order',
@@ -55,6 +69,13 @@ declare module 'vue-router/auto-routes' {
     '/admin/product': RouteRecordInfo<
       '/admin/product',
       '/admin/product',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/admin/product-form': RouteRecordInfo<
+      '/admin/product-form',
+      '/admin/product-form',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -172,6 +193,22 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
+    'src/pages/admin/news.vue': {
+      routes:
+        | '/admin/news'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/news-form.vue': {
+      routes:
+        | '/admin/news-form'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
     'src/pages/admin/order.vue': {
       routes:
         | '/admin/order'
@@ -183,6 +220,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/admin/product.vue': {
       routes:
         | '/admin/product'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/admin/product-form.vue': {
+      routes:
+        | '/admin/product-form'
       views:
         | never
       pathParamNames:

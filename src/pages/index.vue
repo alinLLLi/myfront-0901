@@ -1,7 +1,7 @@
 <template>
   <div class="home-page-container">
     <!-- 3. 形象圖片滿版顯示 (寬度扣除主選單 240px，隨滾動移動視窗下移) -->
-    <section class="hero-banner-section mb-8">
+    <section class="hero-banner-section mb-6 mb-md-8">
       <div class="hero-banner-wrapper">
         <svg
           class="hero-banner-svg"
@@ -37,139 +37,126 @@
       </div>
     </section>
 
-    <v-container fluid class="px-8 pb-12">
-      <!-- 4. 災防新知條列 (一列 4 條，圖片 4:3，日期，標題最多 2 行顯示...) -->
-      <section class="news-section mb-12">
-        <div class="section-header d-flex align-center justify-space-between mb-6">
+    <!-- 主內容區塊 (對照 SSSSS 主流) -->
+    <main class="main-content-flow px-4 px-md-8 pb-12">
+      <!-- 即時災情即時短波提醒 Banner (對照 SSSSS 災情通報) -->
+      <section class="live-alert-ticker mb-6">
+        <div class="ticker-badge">
+          <v-icon icon="mdi-alert-circle" size="18" color="#EF4628" />
+          <span>災情通報</span>
+        </div>
+        <div class="ticker-text">
+          【強震警戒】東部外海發生規模 6.2 強震，請民眾落實「趴下、掩護、穩住」抗震三原則。
+        </div>
+      </section>
+
+      <!-- 4. 災防新知條列 (一列 4 條，對照 SSSSS RWD Breakpoints) -->
+      <section class="content-section news-section mb-10 mb-md-12">
+        <div class="section-header d-flex align-center justify-space-between mb-4 mb-md-6">
           <div class="section-title-wrap d-flex align-center">
             <div class="title-accent-bar mr-3"></div>
-            <h2 class="section-title">災防新知</h2>
+            <h2 class="section-title mb-0">災防新知</h2>
           </div>
           <router-link to="/news" class="more-link d-flex align-center">
-            more <v-icon icon="mdi-chevron-right" size="18" />
+            <span>more</span>
+            <v-icon icon="mdi-chevron-right" size="20" class="more-icon" />
           </router-link>
         </div>
 
-        <v-row>
-          <v-col
+        <div class="cards-grid-4">
+          <v-card
             v-for="news in latestNews"
             :key="news.id"
-            cols="12"
-            sm="6"
-            md="3"
+            flat
+            class="news-card rounded-lg h-100"
+            :to="'/news/' + news.id"
           >
-            <v-card flat class="news-card rounded-lg h-100" :to="'/news/' + news.id">
-              <!-- 4:3 Image ratio -->
-              <v-responsive aspect-ratio="1.3333">
-                <v-img :src="news.image" cover class="h-100 bg-grey-lighten-2" />
-              </v-responsive>
-              <v-card-text class="pa-4 d-flex flex-column">
-                <span class="news-date mb-2">{{ news.date }}</span>
-                <h3 class="news-title text-clamp-2" :title="news.title">
-                  {{ news.title }}
-                </h3>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+            <!-- 4:3 Image ratio -->
+            <v-responsive aspect-ratio="1.3333">
+              <v-img :src="news.image" cover class="h-100 bg-grey-lighten-2" />
+            </v-responsive>
+            <v-card-text class="pa-4 d-flex flex-column">
+              <span class="news-date mb-2">{{ news.date }}</span>
+              <h3 class="news-title text-clamp-2" :title="news.title">
+                {{ news.title }}
+              </h3>
+            </v-card-text>
+          </v-card>
+        </div>
       </section>
 
-      <!-- 5. 防災商城產品列 (一列 4 個，圖片 4:3，商品名稱最多 2 行顯示...，價格) -->
-      <section class="shop-section mb-12">
-        <div class="section-header d-flex align-center justify-space-between mb-6">
+      <!-- 5. 防災商城產品列 (對照 SSSSS RWD Breakpoints) -->
+      <section class="content-section shop-section mb-10 mb-md-12">
+        <div class="section-header d-flex align-center justify-space-between mb-4 mb-md-6">
           <div class="section-title-wrap d-flex align-center">
             <div class="title-accent-bar mr-3"></div>
-            <h2 class="section-title">防災商城</h2>
+            <h2 class="section-title mb-0">災防商城</h2>
           </div>
           <router-link to="/shop" class="more-link d-flex align-center">
-            more <v-icon icon="mdi-chevron-right" size="18" />
+            <span>more</span>
+            <v-icon icon="mdi-chevron-right" size="20" class="more-icon" />
           </router-link>
         </div>
 
-        <v-row>
-          <v-col
+        <div class="cards-grid-4">
+          <v-card
             v-for="product in displayedProducts"
             :key="product._id"
-            cols="12"
-            sm="6"
-            md="3"
+            flat
+            class="product-card rounded-lg h-100 d-flex flex-column"
           >
-            <v-card flat class="product-card rounded-lg h-100 d-flex flex-column">
-              <!-- 4:3 Image ratio -->
-              <v-responsive aspect-ratio="1.3333">
-                <v-img :src="product.imageUrl" cover class="h-100 bg-grey-lighten-2" />
-              </v-responsive>
-              <v-card-text class="pa-4 flex-grow-1 d-flex flex-column justify-space-between">
-                <div>
-                  <h3 class="product-name text-clamp-2 mb-2" :title="product.name">
-                    {{ product.name }}
-                  </h3>
-                </div>
-                <div class="d-flex align-center justify-space-between mt-2">
-                  <span class="product-price">NT$ {{ product.price.toLocaleString() }}</span>
-                  <v-btn
-                    icon="mdi-cart-plus"
-                    size="small"
-                    color="secondary"
-                    variant="tonal"
-                    title="加入購物車"
-                    @click.stop="handleAddToCart(product)"
-                  />
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+            <!-- 4:3 Image ratio -->
+            <v-responsive aspect-ratio="1.3333">
+              <v-img :src="product.imageUrl" cover class="h-100 bg-grey-lighten-2" />
+            </v-responsive>
+            <v-card-text class="pa-4 flex-grow-1 d-flex flex-column justify-space-between">
+              <div>
+                <h3 class="product-name text-clamp-2 mb-2" :title="product.name">
+                  {{ product.name }}
+                </h3>
+              </div>
+              <div class="d-flex align-center justify-space-between mt-2">
+                <span class="product-price">NT$ {{ product.price.toLocaleString() }}</span>
+                <v-btn
+                  icon="mdi-cart-plus"
+                  size="small"
+                  color="secondary"
+                  variant="tonal"
+                  title="加入購物車"
+                  @click.stop="handleAddToCart(product)"
+                />
+              </div>
+            </v-card-text>
+          </v-card>
+        </div>
       </section>
 
-      <!-- 6. 防災遊戲圖片 (引導點進防災遊戲頁面) -->
-      <section class="game-banner-section mb-12">
-        <router-link to="/game" class="game-banner-link">
-          <div class="game-banner-wrapper rounded-xl overflow-hidden shadow-md">
-            <svg
-              viewBox="0 0 1000 220"
-              preserveAspectRatio="xMidYMid slice"
-              class="w-100 h-100"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="1000" height="220" fill="#3C3C5A" />
-              <!-- Background patterns -->
-              <circle cx="900" cy="110" r="160" fill="#17D7BA" opacity="0.2" />
-              <circle cx="100" cy="20" r="90" fill="#FFD800" opacity="0.15" />
-              <path d="M 0 180 Q 250 80 500 180 T 1000 140" fill="none" stroke="#FFD800" stroke-width="8" opacity="0.3" />
-
-              <!-- Game illustration elements -->
-              <g transform="translate(750, 45)">
-                <!-- Gamepad icon representation -->
-                <rect x="0" y="0" width="160" height="110" rx="30" fill="#17D7BA" />
-                <circle cx="45" cy="55" r="16" fill="#3C3C5A" />
-                <path d="M 45 44 V 66 M 34 55 H 56" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
-                <circle cx="115" cy="40" r="10" fill="#EF4628" />
-                <circle cx="130" cy="65" r="10" fill="#FFD800" />
-                <circle cx="100" cy="70" r="10" fill="#3C3C5A" />
-              </g>
-
-              <!-- Text Content -->
-              <text x="80" y="90" fill="#FFD800" font-size="36" font-weight="900">🎮 防災小英雄 ‧ 闖關大冒險</text>
-              <text x="80" y="135" fill="#FFFFFF" font-size="20" font-weight="500">透過趣味互動遊戲，學習正確地震與火災避難小常識！</text>
-
-              <!-- Button CTA -->
-              <g transform="translate(80, 155)">
-                <rect width="180" height="42" rx="21" fill="#FFD800" />
-                <text x="90" y="27" fill="#3C3C5A" font-size="16" font-weight="bold" text-anchor="middle">立即開始遊戲 ▶</text>
-              </g>
-            </svg>
+      <!-- 6. 防災遊戲圖片卡片 (對照 SSSSS RWD 滿版彈性版面) -->
+      <section class="content-section game-banner-section">
+        <router-link to="/game" class="game-interactive-card rounded-xl">
+          <div class="game-card-inner">
+            <div class="game-card-text">
+              <span class="game-chip">
+                <v-icon icon="mdi-gamepad-variant" size="16" class="mr-1" />
+                互動寓教於樂小遊戲
+              </span>
+              <h3 class="game-headline">防災生存大作戰：黃金72小時避難包大挑戰！</h3>
+              <p class="game-subhead">
+                面對突發強烈地震，你能限時打包正確的應急救命物資嗎？立即測驗你的防災求生指數！
+              </p>
+              <div class="game-play-btn">
+                <span>開始遊戲挑戰 ▶</span>
+              </div>
+            </div>
+            <div class="game-card-illu">
+              <div class="illu-circle">
+                <v-icon icon="mdi-gamepad-variant" size="56" color="#FFD800" />
+              </div>
+            </div>
           </div>
         </router-link>
       </section>
-    </v-container>
-
-    <!-- 7. 下方版權說明 (底色 #8C90AB，寬度 100vw - 240px，高度 88px，文字居中對齊，文字顏色 #FFFFFF) -->
-    <footer class="site-footer d-flex align-center justify-center">
-      <p class="copyright-text mb-0">
-        © 2026 防災資訊與應變專區 ‧ 版權所有 All Rights Reserved.
-      </p>
-    </footer>
+    </main>
   </div>
 </template>
 
@@ -177,7 +164,7 @@
   import type { IProduct } from '@/types/product'
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useGetQuery, useGetQuery as useGetProducts } from '@/quries/product'
+  import { useGetQuery as useGetProducts } from '@/quries/product'
   import { useAddCartMutation } from '@/quries/user'
   import { useSnackbarStore } from '@/stores/snackbar'
   import { useUserStore } from '@/stores/user'
@@ -318,11 +305,43 @@
   display: block;
 }
 
+/* 即時災情 Ticker (對照 SSSSS 災情通報) */
+.live-alert-ticker {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ticker-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #EF4628;
+  white-space: nowrap;
+}
+
+.ticker-text {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3C3C5A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Section Header & Title */
 .section-title {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 800;
   color: #3C3C5A;
+  letter-spacing: -0.3px;
 }
 
 .title-accent-bar {
@@ -332,19 +351,66 @@
   border-radius: 3px;
 }
 
+/* more 按鈕 (對照 SSSSS 滿版填滿 Hover 動態效果) */
 .more-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
   font-size: 16px;
-  font-weight: bold;
-  color: #8C90AB;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.more-link:hover {
+  font-weight: 400;
   color: #3C3C5A;
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 1;
+  white-space: nowrap;
+  border-radius: 6px;
 }
 
-/* 4 & 5. News & Product Cards */
+.more-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #3C3C5A;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s ease-out;
+}
+
+.more-link:hover::before {
+  transform: scaleX(1);
+}
+
+.more-link span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease-out;
+}
+
+.more-icon {
+  position: relative;
+  z-index: 1;
+  color: #3C3C5A;
+  transition: color 0.3s ease-out;
+}
+
+.more-link:hover span,
+.more-link:hover .more-icon {
+  color: #FFFFFF !important;
+}
+
+/* 一列四個卡片 Grid (對照 SSSSS RWD Breakpoints) */
+.cards-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
 .news-card, .product-card {
   background-color: #FFFFFF !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
@@ -369,7 +435,6 @@
   line-height: 1.4;
 }
 
-/* CSS Line-clamp for maximum 2 lines truncation */
 .text-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -384,34 +449,140 @@
   color: #EF4628;
 }
 
-/* 6. Game Banner */
-.game-banner-link {
+/* 6. 防災遊戲卡片 (對照 SSSSS 風格) */
+.game-interactive-card {
   display: block;
   text-decoration: none;
+  background: linear-gradient(135deg, #3C3C5A 0%, #2A2A48 100%);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(60, 60, 90, 0.2);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.game-banner-wrapper {
-  height: 220px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+.game-interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(60, 60, 90, 0.3);
 }
 
-.game-banner-wrapper:hover {
-  transform: scale(1.01);
+.game-card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 40px;
 }
 
-/* 7. Copyright Footer */
-.site-footer {
-  background-color: #8C90AB;
-  width: 100%;
-  height: 88px;
-  margin-top: auto;
+.game-card-text {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.copyright-text {
-  font-size: 15px;
-  color: #FFFFFF;
-  text-align: center;
-  font-weight: 400;
+.game-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFD800;
+  color: #3C3C5A;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  width: fit-content;
+}
+
+.game-headline {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.game-subhead {
+  font-size: 14px;
+  color: #ECECF2;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.game-play-btn {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #3C3C5A;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  width: fit-content;
+  transition: background-color 0.2s ease;
+}
+
+.game-interactive-card:hover .game-play-btn {
+  background-color: #FFD800;
+}
+
+.game-card-illu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.illu-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255, 216, 0, 0.15);
+  border: 2px dashed #FFD800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* RWD Media Queries (對照 SSSSS 資料夾 Breakpoints) */
+@media (max-width: 1200px) {
+  .cards-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 959px) {
+  .main-content-flow {
+    padding: 16px;
+  }
+  .cards-grid-4 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .hero-banner-wrapper {
+    max-height: 240px;
+  }
+  .game-card-inner {
+    flex-direction: column;
+    padding: 24px;
+    text-align: center;
+    align-items: center;
+  }
+  .game-card-text {
+    align-items: center;
+  }
+  .game-card-illu {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 599px) {
+  .section-title {
+    font-size: 20px;
+  }
+  .ticker-text {
+    font-size: 13px;
+  }
 }
 </style>
+
+<route lang="yaml">
+meta:
+  title: 首頁
+</route>

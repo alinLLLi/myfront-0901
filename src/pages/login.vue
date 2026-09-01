@@ -126,7 +126,7 @@
         password: values.password,
       })
       snackbar.add({ text: '登入成功', color: 'green' })
-      router.push('/')
+      router.push('/user/order')
     } catch (error) {
       snackbar.addError(error)
     }
