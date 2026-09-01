@@ -13,7 +13,22 @@ import 'vuetify/styles'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: 'disasterTheme',
+    themes: {
+      disasterTheme: {
+        dark: false,
+        colors: {
+          primary: '#FFD800',
+          secondary: '#3C3C5A',
+          background: '#ECECF2',
+          surface: '#FFFFFF',
+          info: '#17D7BA',
+          error: '#EF4628',
+          warning: '#FFD800',
+          success: '#17D7BA',
+        },
+      },
+    },
   },
   locale: {
     locale: 'zhHant',

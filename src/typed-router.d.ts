@@ -59,9 +59,51 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/contact': RouteRecordInfo<
+      '/contact',
+      '/contact',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/disaster': RouteRecordInfo<
+      '/disaster',
+      '/disaster',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/game': RouteRecordInfo<
+      '/game',
+      '/game',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/guide': RouteRecordInfo<
+      '/guide',
+      '/guide',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/login': RouteRecordInfo<
       '/login',
       '/login',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/map': RouteRecordInfo<
+      '/map',
+      '/map',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/news': RouteRecordInfo<
+      '/news',
+      '/news',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -76,6 +118,13 @@ declare module 'vue-router/auto-routes' {
     '/register': RouteRecordInfo<
       '/register',
       '/register',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/shop': RouteRecordInfo<
+      '/shop',
+      '/shop',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -139,9 +188,57 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
+    'src/pages/contact.vue': {
+      routes:
+        | '/contact'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/disaster.vue': {
+      routes:
+        | '/disaster'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/game.vue': {
+      routes:
+        | '/game'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/guide.vue': {
+      routes:
+        | '/guide'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
     'src/pages/login.vue': {
       routes:
         | '/login'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/map.vue': {
+      routes:
+        | '/map'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/news.vue': {
+      routes:
+        | '/news'
       views:
         | never
       pathParamNames:
@@ -158,6 +255,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/register.vue': {
       routes:
         | '/register'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/shop.vue': {
+      routes:
+        | '/shop'
       views:
         | never
       pathParamNames:
