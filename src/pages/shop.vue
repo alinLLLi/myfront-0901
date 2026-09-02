@@ -26,7 +26,7 @@
             v-model="selectedCategory"
             density="compact"
             variant="outlined"
-            :items="['全部類別', '3C', '食品', '衣服', '防護裝備']"
+            :items="['全部類別', '避難食物', '生活用品', '外套服飾', '防身用品']"
             hide-details
             label="商品分類"
           />
@@ -124,7 +124,7 @@
       name: '多功能防災應變收音機與手搖發電手電筒組',
       price: 1280,
       description: '具備手搖發電、太陽能充電與緊急SOS警報器機能',
-      category: '3C',
+      category: '生活用品',
       sell: true,
       image: 'shop1.jpg',
       imageUrl: 'https://picsum.photos/seed/shop1/600/450',
@@ -136,7 +136,7 @@
       name: '高強度頭部防護防災避難安全帽 (黃色款)',
       price: 650,
       description: '符合國家安全檢驗標準，輕巧耐衝擊',
-      category: '3C',
+      category: '防身用品',
       sell: true,
       image: 'shop2.jpg',
       imageUrl: 'https://picsum.photos/seed/shop2/600/450',
@@ -148,7 +148,7 @@
       name: '全家必備家庭式72小時緊急避難背包豪華組',
       price: 2450,
       description: '含急救包、保暖毯、水質淨化錠及備用糧食',
-      category: '3C',
+      category: '生活用品',
       sell: true,
       image: 'shop3.jpg',
       imageUrl: 'https://picsum.photos/seed/shop3/600/450',
@@ -160,7 +160,7 @@
       name: '可保存5年長期保存應變戰備乾糧餅乾箱裝',
       price: 890,
       description: '高熱量易保存，緊急災變時期迅速補充能量',
-      category: '食品',
+      category: '避難食物',
       sell: true,
       image: 'shop4.jpg',
       imageUrl: 'https://picsum.photos/seed/shop4/600/450',
@@ -172,7 +172,7 @@
       name: '個人便攜式反光防風防雨保暖保溫毯 4入組',
       price: 350,
       description: '高反射銀薄膜，保持90%人體體溫',
-      category: '衣服',
+      category: '外套服飾',
       sell: true,
       image: 'shop5.jpg',
       imageUrl: 'https://picsum.photos/seed/shop5/600/450',
@@ -184,7 +184,7 @@
       name: '便攜式淨水器戶外緊急濾水吸管組',
       price: 520,
       description: '過濾99.99%水中有害細菌與微粒',
-      category: '3C',
+      category: '生活用品',
       sell: true,
       image: 'shop6.jpg',
       imageUrl: 'https://picsum.photos/seed/shop6/600/450',

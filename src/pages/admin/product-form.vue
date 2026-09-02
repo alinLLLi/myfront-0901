@@ -154,7 +154,7 @@
   const productId = computed(() => (route.query.id as string) || '')
   const isEdit = computed(() => Boolean(productId.value))
 
-  const categoryOptions = ['3C', '食品', '衣服', 'AED']
+  const categoryOptions = ['避難食物', '生活用品', '外套服飾', '防身用品']
 
   const schema = yup.object({
     name: yup.string().typeError('資料格式錯誤').required('名稱必填'),
@@ -170,7 +170,7 @@
       name: '',
       price: 0,
       description: '',
-      category: '3C',
+      category: '避難食物',
       sell: false,
     },
   })

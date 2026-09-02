@@ -1,4 +1,4 @@
-export type TCategoryOptions = '3C' | '食品' | '衣服'
+export type TCategoryOptions = '避難食物' | '生活用品' | '外套服飾' | '防身用品'
 
 export interface IProduct {
   _id: string
