@@ -12,8 +12,8 @@
 
     <!-- 1. Fixed Left Sidebar Main Menu (主選單 240px x 100vh) -->
     <aside class="sidebar-drawer" :class="{ 'mobile-open': isMobileMenuOpen }">
-      <!-- 1-1. Logo (寬度 120px，高度 100px) -->
-      <div class="logo-wrapper d-flex justify-center align-center py-2" @click="handleNavClick('/')">
+      <!-- 1-1. Logo (寬度 130px，高度 130px) -->
+      <div class="logo-wrapper d-flex justify-center align-center py-2 pc-2" @click="handleNavClick('/')">
         <MascotLogo />
       </div>
 
@@ -22,12 +22,12 @@
         <router-link
           v-for="item in frontendNavItems"
           :key="item.to"
-          :to="item.to"
           class="sidebar-nav-item d-flex align-center"
           :class="{ active: route.path === item.to }"
+          :to="item.to"
           @click="isMobileMenuOpen = false"
         >
-          <v-icon :icon="item.icon" size="16" class="nav-icon mr-3" />
+          <v-icon class="nav-icon mr-3" :icon="item.icon" size="16" />
           <span class="nav-text">{{ item.title }}</span>
         </router-link>
       </nav>
@@ -38,7 +38,7 @@
           class="banner-btn emergency-banner-btn d-flex align-center justify-center"
           @click="handleNavClick('/disaster')"
         >
-          <v-icon icon="mdi-alert-circle" size="24" color="#EF4628" class="emergency-icon mr-2" />
+          <v-icon class="emergency-icon mr-2" color="#EF4628" icon="mdi-alert-circle" size="24" />
           <span class="banner-text text-dark">災時極簡模式</span>
         </button>
 
@@ -52,6 +52,7 @@
           <v-icon icon="mdi-login" size="18" />
           <span>登入</span>
         </button>
+
         <button
           v-else
           class="sidebar-login-btn d-flex d-md-none align-center justify-center ga-2"
@@ -73,13 +74,14 @@
           <div class="search-bar-wrap">
             <input
               v-model="searchQuery"
-              type="text"
-              placeholder="搜尋防災相關資訊"
               class="search-input"
+              placeholder="搜尋防災相關資訊"
+              type="text"
               @keyup.enter="handleSearch"
-            />
+            >
+
             <button class="search-btn" title="搜尋" @click="handleSearch">
-              <v-icon icon="mdi-magnify" size="18" color="#3C3C5A" />
+              <v-icon color="#3C3C5A" icon="mdi-magnify" size="18" />
             </button>
           </div>
         </div>
@@ -93,7 +95,8 @@
             title="檢視購物車"
             @click="cartDrawerStore.open()"
           >
-            <v-icon icon="mdi-cart-outline" size="22" color="#3C3C5A" />
+            <v-icon color="#3C3C5A" icon="mdi-cart-outline" size="22" />
+
             <span v-if="user.cart > 0" class="cart-badge">
               {{ user.cart }}
             </span>
@@ -102,11 +105,11 @@
           <!-- 會員中心 Icon 按鈕 (登入後顯示) -->
           <router-link
             v-if="user.isLoggedIn"
-            to="/user/order"
             class="header-icon-btn user-btn"
             title="會員中心"
+            to="/user/order"
           >
-            <v-icon icon="mdi-account-circle-outline" size="24" color="#3C3C5A" />
+            <v-icon color="#3C3C5A" icon="mdi-account-circle-outline" size="24" />
           </router-link>
 
           <!-- 直向分隔線 -->
@@ -120,8 +123,9 @@
             @click="router.push('/login')"
           >
             <span>登入</span>
-            <v-icon icon="mdi-chevron-right" size="22" class="login-arrow" />
+            <v-icon class="login-arrow" icon="mdi-chevron-right" size="22" />
           </button>
+
           <button
             v-else
             class="member-login-btn"
@@ -129,7 +133,7 @@
             @click="handleLogout"
           >
             <span>登出</span>
-            <v-icon icon="mdi-chevron-right" size="22" class="login-arrow" />
+            <v-icon class="login-arrow" icon="mdi-chevron-right" size="22" />
           </button>
         </div>
       </header>
@@ -141,21 +145,23 @@
           <!-- 左邊: Menu Icon -->
           <div class="mobile-header-left d-flex align-center">
             <v-btn
-              icon
-              variant="text"
               color="secondary"
               density="comfortable"
+              icon
               title="開啟主選單"
+              variant="text"
               @click="isMobileMenuOpen = !isMobileMenuOpen"
             >
               <v-icon icon="mdi-menu" size="26" />
             </v-btn>
           </div>
 
-          <!-- 中間: Logo -->
-          <div class="mobile-header-center d-flex justify-center align-center cursor-pointer" @click="handleNavClick('/')">
-            <MascotLogo class="mobile-logo-scale" />
-          </div>
+          <!-- 中間: Logo (CSS background: url 連接 logo_mo.svg) -->
+          <div
+            class="mobile-header-center mobile-logo-bg cursor-pointer"
+            title="返回首頁"
+            @click="handleNavClick('/')"
+          />
 
           <!-- 右邊: 購物車 Icon、(若登入則有 User Icon) -->
           <div class="mobile-header-right d-flex align-center ga-1 ga-sm-2">
@@ -166,7 +172,8 @@
               title="檢視購物車"
               @click="cartDrawerStore.open()"
             >
-              <v-icon icon="mdi-cart-outline" size="22" color="#3C3C5A" />
+              <v-icon color="#3C3C5A" icon="mdi-cart-outline" size="22" />
+
               <span v-if="user.cart > 0" class="cart-badge">
                 {{ user.cart }}
               </span>
@@ -175,11 +182,11 @@
             <!-- 若已登入：出現 User Icon -->
             <router-link
               v-if="user.isLoggedIn"
-              to="/user/order"
               class="header-icon-btn user-btn"
               title="會員中心"
+              to="/user/order"
             >
-              <v-icon icon="mdi-account-circle-outline" size="22" color="#3C3C5A" />
+              <v-icon color="#3C3C5A" icon="mdi-account-circle-outline" size="22" />
             </router-link>
           </div>
         </div>
@@ -189,13 +196,14 @@
           <div class="search-bar-wrap w-100">
             <input
               v-model="searchQuery"
-              type="text"
-              placeholder="搜尋防災相關資訊"
               class="search-input"
+              placeholder="搜尋防災相關資訊"
+              type="text"
               @keyup.enter="handleSearch"
-            />
+            >
+
             <button class="search-btn" title="搜尋" @click="handleSearch">
-              <v-icon icon="mdi-magnify" size="18" color="#3C3C5A" />
+              <v-icon color="#3C3C5A" icon="mdi-magnify" size="18" />
             </button>
           </div>
         </div>
@@ -228,6 +236,7 @@
   import BreadcrumbBar from '@/components/BreadcrumbBar.vue'
   import CartDrawer from '@/components/CartDrawer.vue'
   import MascotLogo from '@/components/MascotLogo.vue'
+  import MascotLogoMobile from '@/components/MascotLogoMobile.vue'
   import { useLogoutMutation } from '@/quries/auth'
   import { useCartDrawerStore } from '@/stores/cartDrawer'
   import { useSnackbarStore } from '@/stores/snackbar'
@@ -293,6 +302,11 @@
   display: flex;
 }
 
+.pc-2{
+  padding-top:32px;
+  padding-bottom:16px;
+}
+
 .disaster-app-layout.bg-white-mode {
   background-color: #FFFFFF !important;
 }
@@ -321,7 +335,7 @@
 
 .logo-wrapper {
   cursor: pointer;
-  border-bottom: 1px solid #ECECF2;
+  /* border-bottom: 1px solid #ECECF2; */
 }
 
 .sidebar-nav {
@@ -362,7 +376,7 @@
 
 .sidebar-nav-item.active {
   background-color: #ECECF2;
-  border-left: 4px solid #FFD800;
+  /* border-left: 4px solid #FFD800; */
 }
 
 .nav-icon {
@@ -457,6 +471,12 @@
   color: #FFFFFF !important;
 }
 
+.mobile-logo-bg {
+  width: 140px;
+  height: 40px;
+  background: url('/images/logo_mo.svg') no-repeat center / contain;
+}
+
 /* 主選單底部 登入/登出 按鈕 (僅於手機版顯示 d-md-none) */
 .sidebar-login-btn {
   width: 200px;
@@ -488,7 +508,8 @@
 .site-header {
   height: 72px;
   width: 100%;
-  background-color: #D7D7E1;
+  background-color: rgba(215, 215, 225, 0.85);
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid #3C3C5A;
   position: relative;
   z-index: 10;
@@ -497,14 +518,23 @@
 /* Mobile Site Header (< 960px) */
 .mobile-site-header {
   width: 100%;
-  background-color: #D7D7E1;
+  background-color: rgba(215, 215, 225, 0.85);
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid #3C3C5A;
   position: relative;
   z-index: 10;
 }
 
+.mobile-header-top-row {
+  width: 100%;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .mobile-logo-scale {
-  height: 36px;
+  height: 44px;
   width: auto;
   max-width: 120px;
 }
@@ -680,10 +710,12 @@
 @media (max-width: 959px) {
   .sidebar-drawer {
     transform: translateX(-100%);
+    box-shadow: none;
   }
 
   .sidebar-drawer.mobile-open {
     transform: translateX(0);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
   }
 
   .main-shell {

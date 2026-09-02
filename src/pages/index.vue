@@ -291,11 +291,14 @@
 .hero-banner-section {
   width: 100%;
   overflow: hidden;
+  margin-top: -72px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-banner-wrapper {
   width: 100%;
-  max-height: 400px;
+  height: 100vh;
   display: block;
 }
 
@@ -548,6 +551,9 @@
 }
 
 @media (max-width: 959px) {
+  .hero-banner-section {
+    margin-top: -104px;
+  }
   .main-content-flow {
     padding: 16px;
   }
@@ -556,7 +562,7 @@
     gap: 16px;
   }
   .hero-banner-wrapper {
-    max-height: 240px;
+    height: 100vh;
   }
   .game-card-inner {
     flex-direction: column;
