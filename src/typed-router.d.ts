@@ -127,6 +127,21 @@ declare module 'vue-router/auto-routes' {
       '/news',
       Record<never, never>,
       Record<never, never>,
+      | '/news/'
+      | '/news/[id]'
+    >,
+    '/news/': RouteRecordInfo<
+      '/news/',
+      '/news',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/news/[id]': RouteRecordInfo<
+      '/news/[id]',
+      '/news/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/product/[id]': RouteRecordInfo<
@@ -284,10 +299,28 @@ declare module 'vue-router/auto-routes' {
     'src/pages/news.vue': {
       routes:
         | '/news'
+        | '/news/'
+        | '/news/[id]'
+      views:
+        | 'default'
+      pathParamNames:
+        | never
+    }
+    'src/pages/news/index.vue': {
+      routes:
+        | '/news/'
       views:
         | never
       pathParamNames:
         | never
+    }
+    'src/pages/news/[id].vue': {
+      routes:
+        | '/news/[id]'
+      views:
+        | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/product/[id].vue': {
       routes:

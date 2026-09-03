@@ -5,46 +5,104 @@
       <div class="hero-banner-wrapper">
         <svg
           class="hero-banner-svg"
-          viewBox="0 0 1200 400"
           preserveAspectRatio="xMidYMid slice"
+          viewBox="0 0 1200 400"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="heroGradient"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="100%"
+            >
               <stop offset="0%" stop-color="#3C3C5A" />
               <stop offset="50%" stop-color="#4B4B6E" />
               <stop offset="100%" stop-color="#17D7BA" />
             </linearGradient>
-            <linearGradient id="yellowAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+
+            <linearGradient
+              id="yellowAccent"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            >
               <stop offset="0%" stop-color="#FFD800" stop-opacity="0.8" />
               <stop offset="100%" stop-color="#FFD800" stop-opacity="0" />
             </linearGradient>
           </defs>
-          <rect width="1200" height="400" fill="url(#heroGradient)" />
+
+          <rect fill="url(#heroGradient)" height="400" width="1200" />
           <!-- Decorative shapes -->
-          <circle cx="1050" cy="80" r="180" fill="url(#yellowAccent)" />
-          <path d="M-50 320 Q 300 240, 650 340 T 1300 300" fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="40" />
-          <path d="M0 360 Q 400 280, 800 380 T 1250 320" fill="none" stroke="#17D7BA" stroke-opacity="0.25" stroke-width="20" />
-          
+          <circle cx="1050" cy="80" fill="url(#yellowAccent)" r="180" />
+
+          <path
+            d="M-50 320 Q 300 240, 650 340 T 1300 300"
+            fill="none"
+            stroke="#FFFFFF"
+            stroke-opacity="0.15"
+            stroke-width="40"
+          />
+
+          <path
+            d="M0 360 Q 400 280, 800 380 T 1250 320"
+            fill="none"
+            stroke="#17D7BA"
+            stroke-opacity="0.25"
+            stroke-width="20"
+          />
+
           <!-- Banner Hero Text Content -->
-          <text x="80" y="150" fill="#FFD800" font-size="44" font-weight="900" letter-spacing="2">全民防災，智慧守護</text>
-          <text x="80" y="210" fill="#FFFFFF" font-size="24" font-weight="500">即時掌握災害新知與避難資訊 ‧ 打造最堅固的安全防護網</text>
-          
+          <text
+            fill="#FFD800"
+            font-size="44"
+            font-weight="900"
+            letter-spacing="2"
+            x="80"
+            y="150"
+          >全民防災，智慧守護</text>
+
+          <text
+            fill="#FFFFFF"
+            font-size="24"
+            font-weight="500"
+            x="80"
+            y="210"
+          >即時掌握災害新知與避難資訊 ‧ 打造最堅固的安全防護網</text>
+
           <!-- Badge overlay -->
-          <rect x="80" y="250" width="220" height="48" rx="24" fill="#FFD800" />
-          <text x="190" y="281" fill="#3C3C5A" font-size="18" font-weight="bold" text-anchor="middle">探索防災專區</text>
+          <rect
+            fill="#FFD800"
+            height="48"
+            rx="24"
+            width="220"
+            x="80"
+            y="250"
+          />
+
+          <text
+            fill="#3C3C5A"
+            font-size="18"
+            font-weight="bold"
+            text-anchor="middle"
+            x="190"
+            y="281"
+          >探索防災專區</text>
         </svg>
       </div>
     </section>
 
     <!-- 主內容區塊 (對照 SSSSS 主流) -->
-    <main class="main-content-flow px-4 px-md-8 pb-12">
+    <main class="main-content-flow px-6 px-md-8 pb-12">
       <!-- 即時災情即時短波提醒 Banner (對照 SSSSS 災情通報) -->
       <section class="live-alert-ticker mb-6">
         <div class="ticker-badge">
-          <v-icon icon="mdi-alert-circle" size="18" color="#EF4628" />
+          <v-icon color="#EF4628" icon="mdi-alert-circle" size="18" />
           <span>災情通報</span>
         </div>
+
         <div class="ticker-text">
           【強震警戒】東部外海發生規模 6.2 強震，請民眾落實「趴下、掩護、穩住」抗震三原則。
         </div>
@@ -54,29 +112,32 @@
       <section class="content-section news-section mb-10 mb-md-12">
         <div class="section-header d-flex align-center justify-space-between mb-4 mb-md-6">
           <div class="section-title-wrap d-flex align-center">
-            <div class="title-accent-bar mr-3"></div>
+            <div class="title-accent-bar mr-3" />
             <h2 class="section-title mb-0">災防新知</h2>
           </div>
-          <router-link to="/news" class="more-link d-flex align-center">
+
+          <router-link class="more-link d-flex align-center" to="/news">
             <span>more</span>
-            <v-icon icon="mdi-chevron-right" size="20" class="more-icon" />
+            <v-icon class="more-icon" icon="mdi-chevron-right" size="20" />
           </router-link>
         </div>
 
         <div class="cards-grid-4">
           <v-card
             v-for="news in latestNews"
-            :key="news.id"
-            flat
+            :key="news._id || news.id"
             class="news-card rounded-lg h-100"
-            :to="'/news/' + news.id"
+            flat
+            :to="'/news/' + (news._id || (news.id.startsWith('news-') ? news.id.replace('news-', '') : news.id))"
           >
-            <!-- 4:3 Image ratio -->
-            <v-responsive aspect-ratio="1.3333">
-              <v-img :src="news.image" cover class="h-100 bg-grey-lighten-2" />
+            <!-- 4:3 Image ratio (垂直居中對齊與遮蔽溢出) -->
+            <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
+              <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="news.image" />
             </v-responsive>
+
             <v-card-text class="pa-4 d-flex flex-column">
               <span class="news-date mb-2">{{ news.date }}</span>
+
               <h3 class="news-title text-clamp-2" :title="news.title">
                 {{ news.title }}
               </h3>
@@ -89,12 +150,13 @@
       <section class="content-section shop-section mb-10 mb-md-12">
         <div class="section-header d-flex align-center justify-space-between mb-4 mb-md-6">
           <div class="section-title-wrap d-flex align-center">
-            <div class="title-accent-bar mr-3"></div>
+            <div class="title-accent-bar mr-3" />
             <h2 class="section-title mb-0">災防商城</h2>
           </div>
-          <router-link to="/shop" class="more-link d-flex align-center">
+
+          <router-link class="more-link d-flex align-center" to="/shop">
             <span>more</span>
-            <v-icon icon="mdi-chevron-right" size="20" class="more-icon" />
+            <v-icon class="more-icon" icon="mdi-chevron-right" size="20" />
           </router-link>
         </div>
 
@@ -102,28 +164,32 @@
           <v-card
             v-for="product in displayedProducts"
             :key="product._id"
+            class="product-card rounded-lg h-100 d-flex flex-column cursor-pointer"
             flat
-            class="product-card rounded-lg h-100 d-flex flex-column"
+            :to="'/product/' + product._id"
           >
-            <!-- 4:3 Image ratio -->
-            <v-responsive aspect-ratio="1.3333">
-              <v-img :src="product.imageUrl" cover class="h-100 bg-grey-lighten-2" />
+            <!-- 4:3 Image ratio (垂直居中對齊與遮蔽溢出) -->
+            <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
+              <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="product.imageUrl" />
             </v-responsive>
+
             <v-card-text class="pa-4 flex-grow-1 d-flex flex-column justify-space-between">
               <div>
                 <h3 class="product-name text-clamp-2 mb-2" :title="product.name">
                   {{ product.name }}
                 </h3>
               </div>
+
               <div class="d-flex align-center justify-space-between mt-2">
                 <span class="product-price">NT$ {{ product.price.toLocaleString() }}</span>
+
                 <v-btn
+                  color="secondary"
                   icon="mdi-cart-plus"
                   size="small"
-                  color="secondary"
-                  variant="tonal"
                   title="加入購物車"
-                  @click.stop="handleAddToCart(product)"
+                  variant="tonal"
+                  @click.stop.prevent="handleAddToCart(product)"
                 />
               </div>
             </v-card-text>
@@ -133,24 +199,28 @@
 
       <!-- 6. 防災遊戲圖片卡片 (對照 SSSSS RWD 滿版彈性版面) -->
       <section class="content-section game-banner-section">
-        <router-link to="/game" class="game-interactive-card rounded-xl">
+        <router-link class="game-interactive-card rounded-xl" to="/game">
           <div class="game-card-inner">
             <div class="game-card-text">
               <span class="game-chip">
-                <v-icon icon="mdi-gamepad-variant" size="16" class="mr-1" />
+                <v-icon class="mr-1" icon="mdi-gamepad-variant" size="16" />
                 互動寓教於樂小遊戲
               </span>
+
               <h3 class="game-headline">防災生存大作戰：黃金72小時避難包大挑戰！</h3>
+
               <p class="game-subhead">
                 面對突發強烈地震，你能限時打包正確的應急救命物資嗎？立即測驗你的防災求生指數！
               </p>
+
               <div class="game-play-btn">
                 <span>開始遊戲挑戰 ▶</span>
               </div>
             </div>
+
             <div class="game-card-illu">
               <div class="illu-circle">
-                <v-icon icon="mdi-gamepad-variant" size="56" color="#FFD800" />
+                <v-icon color="#FFD800" icon="mdi-gamepad-variant" size="56" />
               </div>
             </div>
           </div>
@@ -166,42 +236,21 @@
   import { useRouter } from 'vue-router'
   import { useGetQuery as useGetProducts } from '@/quries/product'
   import { useAddCartMutation } from '@/quries/user'
+  import { useNewsStore } from '@/stores/news'
   import { useSnackbarStore } from '@/stores/snackbar'
   import { useUserStore } from '@/stores/user'
 
   const user = useUserStore()
   const router = useRouter()
   const snackbar = useSnackbarStore()
+  const newsStore = useNewsStore()
   const { mutateAsync: addCartMutate } = useAddCartMutation()
   const { data: productsData } = useGetProducts()
 
-  // 4. Mock disaster news (4 items for 1 row)
-  const latestNews = [
-    {
-      id: 1,
-      date: '2026-08-28',
-      title: '防範強震來襲！居家防災家具固定與緊急避難包準備指南規範說明',
-      image: 'https://picsum.photos/seed/disaster1/600/450',
-    },
-    {
-      id: 2,
-      date: '2026-08-22',
-      title: '極端氣候防汛動員：各地水利署防汛演練與最新淹水警戒系統升級通知',
-      image: 'https://picsum.photos/seed/disaster2/600/450',
-    },
-    {
-      id: 3,
-      date: '2026-08-15',
-      title: '火災避難新觀念：「趴下、掩護、穩住」與關門避難安全示範',
-      image: 'https://picsum.photos/seed/disaster3/600/450',
-    },
-    {
-      id: 4,
-      date: '2026-08-09',
-      title: '國家級警報測試及各縣市應變中心連線運作狀況綜合報告',
-      image: 'https://picsum.photos/seed/disaster4/600/450',
-    },
-  ]
+  // 4. 動態連結災防知識 Store 最新 4 篇文章
+  const latestNews = computed(() => {
+    return newsStore.newsList.filter(item => item.published).slice(0, 4)
+  })
 
   // Fallback product items if backend is empty
   const fallbackProducts: IProduct[] = [
@@ -268,6 +317,10 @@
   async function handleAddToCart (product: IProduct) {
     if (!user.isLoggedIn) {
       router.push('/login')
+      return
+    }
+    if (!/^[0-9a-f]{24}$/i.test(product._id)) {
+      snackbar.add({ text: '此為示範商品，無法加入購物車', color: 'warning' })
       return
     }
     try {
@@ -555,7 +608,7 @@
     margin-top: -104px;
   }
   .main-content-flow {
-    padding: 16px;
+    padding: 32px;
   }
   .cards-grid-4 {
     grid-template-columns: 1fr;

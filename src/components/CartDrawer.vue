@@ -214,16 +214,17 @@
   max-width: 90vw;
   height: 100vh;
   background-color: #ffffff;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0);
   z-index: 2010;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .cart-drawer.open {
   transform: translateX(0);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .cart-header {

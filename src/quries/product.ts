@@ -42,6 +42,9 @@ export const useGetIdQuery = defineQuery(() => {
     key: () => ['product', route.params.id],
     // 查詢方式
     query: async () => {
+      if (!/^[0-9a-fA-F]{24}$/.test(String(route.params.id))) {
+        return null
+      }
       const { data } = await product.getId(route.params.id)
       return data.result
     },

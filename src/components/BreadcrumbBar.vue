@@ -23,8 +23,10 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useNewsStore } from '@/stores/news'
 
   const route = useRoute()
+  const newsStore = useNewsStore()
 
   const pathMap: Record<string, string> = {
     '/': '首頁',
@@ -81,6 +83,33 @@
         { title: isEdit ? '編輯災防知識' : '新增災防知識', to: route.fullPath },
       ]
     }
+    // 災防知識詳細頁 /news/:id 處理
+    if (route.path.startsWith('/news/') && route.params.id) {
+      const rawId = String(route.params.id)
+      let found = newsStore.newsList.find(n => n.id === rawId || n.id === `news-${rawId}`)
+      if (!found) {
+        const numericIndex = Number.parseInt(rawId, 10)
+        if (!Number.isNaN(numericIndex) && numericIndex > 0 && numericIndex <= newsStore.newsList.length) {
+          found = newsStore.newsList[numericIndex - 1]
+        }
+      }
+      const articleTitle = found ? found.title : (route.meta?.title || '災防知識詳細')
+      return [
+        rootItem.value,
+        { title: '災防知識', to: '/news' },
+        { title: articleTitle, to: route.fullPath },
+      ]
+    }
+    // 防災商品詳細頁 /product/:id 處理
+    if (route.path.startsWith('/product/') && route.params.id) {
+      const prodTitle = document.title ? document.title.replace(' - 災防商城', '') : (route.meta?.title || '防災商品詳細')
+      return [
+        rootItem.value,
+        { title: '災防商城', to: '/shop' },
+        { title: prodTitle, to: route.fullPath },
+      ]
+    }
+
     const currentTitle = route.meta?.title || pathMap[route.path] || '頁面'
     return [
       rootItem.value,
@@ -93,11 +122,26 @@
 .breadcrumb-bar {
   background-color: transparent;
   border-bottom: 1px solid #EEEEF5;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+:deep(.v-breadcrumbs) {
+  flex-wrap: nowrap !important;
+  overflow: hidden;
+  max-width: 100%;
+  align-items: center;
+}
+
+:deep(.v-breadcrumbs-divider) {
+  flex-shrink: 0;
 }
 
 .breadcrumb-link {
   color: #8C90AB;
   transition: color 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .breadcrumb-link:hover {
@@ -106,6 +150,12 @@
 
 .breadcrumb-current {
   color: #3C3C5A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .text-grey-medium {

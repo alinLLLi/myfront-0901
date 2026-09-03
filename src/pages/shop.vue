@@ -1,82 +1,92 @@
 <template>
-  <v-container fluid class="pa-8">
+  <v-container class="pa-8" fluid>
     <div class="d-flex align-center justify-space-between mb-6">
       <div class="d-flex align-center">
-        <div class="title-bar mr-3"></div>
+        <div class="title-bar mr-3" />
         <h1 class="page-title">防災商城</h1>
       </div>
     </div>
 
     <!-- Search & Filter Controls -->
-    <v-card flat class="pa-4 mb-6 rounded-lg bg-white">
+    <v-card class="pa-4 mb-6 rounded-lg bg-white" flat>
       <v-row align="center">
         <v-col cols="12" md="6">
           <v-text-field
             v-model="searchQuery"
-            density="compact"
-            variant="outlined"
-            placeholder="搜尋防災商品..."
             append-inner-icon="mdi-magnify"
-            hide-details
             clearable
+            density="compact"
+            hide-details
+            placeholder="搜尋防災商品..."
+            variant="outlined"
           />
         </v-col>
+
         <v-col cols="12" md="3">
           <v-select
             v-model="selectedCategory"
             density="compact"
-            variant="outlined"
-            :items="['全部類別', '避難食物', '生活用品', '外套服飾', '防身用品']"
             hide-details
+            :items="['全部類別', '避難食物', '生活用品', '外套服飾', '防身用品']"
             label="商品分類"
+            variant="outlined"
           />
         </v-col>
+
         <v-col cols="12" md="3">
           <v-select
             v-model="selectedSort"
             density="compact"
-            variant="outlined"
-            :items="sortOptions"
-            item-title="text"
-            return-object
             hide-details
+            item-title="text"
+            :items="sortOptions"
             label="排序方式"
+            return-object
+            variant="outlined"
           />
         </v-col>
       </v-row>
     </v-card>
 
-    <!-- Product Grid (4 items per row, 4:3 image ratio, 2 line title truncation) -->
+    <!-- Product Grid (2 items per row <= 1200px, 4 items >= 1280px) -->
     <v-row>
       <v-col
         v-for="product in filteredProducts"
         :key="product._id"
         cols="12"
+        lg="3"
+        md="6"
         sm="6"
-        md="3"
       >
-        <v-card flat class="product-card rounded-lg h-100 d-flex flex-column">
-          <v-responsive aspect-ratio="1.3333">
-            <v-img :src="product.imageUrl" cover class="h-100 bg-grey-lighten-2" />
+        <v-card
+          class="product-card rounded-lg h-100 d-flex flex-column cursor-pointer"
+          flat
+          :to="'/product/' + product._id"
+        >
+          <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
+            <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="product.imageUrl" />
           </v-responsive>
+
           <v-card-text class="pa-4 flex-grow-1 d-flex flex-column justify-space-between">
             <div>
               <span class="product-category text-caption text-grey mb-1 d-block">{{ product.category }}</span>
+
               <h2 class="product-name text-clamp-2 mb-2" :title="product.name">
                 {{ product.name }}
               </h2>
             </div>
+
             <div class="d-flex align-center justify-space-between mt-3">
               <span class="product-price">NT$ {{ product.price.toLocaleString() }}</span>
+
               <v-btn
                 color="secondary"
+                icon="mdi-cart-plus"
                 size="small"
-                variant="flat"
-                prepend-icon="mdi-cart-plus"
-                @click="addToCart(product)"
-              >
-                加入購物車
-              </v-btn>
+                title="加入購物車"
+                variant="tonal"
+                @click.stop.prevent="addToCart(product)"
+              />
             </div>
           </v-card-text>
         </v-card>
@@ -219,6 +229,10 @@
       router.push('/login')
       return
     }
+    if (!/^[0-9a-f]{24}$/i.test(product._id)) {
+      snackbar.add({ text: '此為示範商品，無法加入購物車', color: 'warning' })
+      return
+    }
     try {
       await addCartMutate({ product: product._id, quantity: 1, replace: false })
       snackbar.add({ text: '已加入購物車', color: 'green' })
@@ -271,6 +285,13 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (max-width: 1200px) {
+  .v-col-md-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
 }
 </style>
 

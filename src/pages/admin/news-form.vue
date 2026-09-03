@@ -184,12 +184,12 @@
     try {
       const fileImage = fileRecords.value[0]?.file
       if (isEdit.value) {
-        newsStore.updateNews(newsId.value, {
+        await newsStore.updateNews(newsId.value, {
           ...values,
           fileImage,
         })
       } else {
-        newsStore.addNews({
+        await newsStore.addNews({
           ...values,
           image: '',
           fileImage,

@@ -4,6 +4,12 @@
  * Configures SASS variables and Vuetify overwrites
  */
 
+ /* 全域覆寫 Vuetify v-responsive 比例 */
+.v-responsive__sizer {
+  padding-bottom: 75% !important; /* 強制改為 4:3 比例 (75%) */
+  overflow: hidden; 
+}
+
 // https://vuetifyjs.com/features/sass-variables/`
 // @use 'vuetify/settings' with (
 //   $color-pack: false
