@@ -1,1 +1,0 @@
-import{En as e,Mt as t,Tn as n,a as r,d as i}from"./tag-5h1rzA3J.js";function a(a,o=`div`,s){return r()({name:s??e(n(a.replace(/__/g,`-`))),props:{tag:{type:String,default:o},...i()},setup(e,{slots:n}){return()=>t(e.tag,{class:[a,e.class],style:e.style},n.default?.())}})}export{a as t};
