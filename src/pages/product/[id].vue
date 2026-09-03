@@ -1,53 +1,55 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-8 page-container">
+  <v-container class="pa-4 pa-md-8 page-container" fluid>
     <!-- 頂部導航列與按鈕 -->
     <div class="d-flex align-center justify-space-between mb-6">
       <v-btn
+        class="back-btn font-weight-bold"
+        color="secondary"
         to="/shop"
         variant="text"
-        color="secondary"
-        class="back-btn font-weight-bold"
       >
-        <v-icon icon="mdi-arrow-left" size="20" class="mr-1" />
+        <v-icon class="mr-1" icon="mdi-arrow-left" size="20" />
         返回災防商城
       </v-btn>
 
       <div class="d-flex align-center ga-2">
         <v-btn
-          icon
-          variant="tonal"
           color="secondary"
+          icon
           size="small"
           title="分享商品"
+          variant="tonal"
           @click="handleShare"
         >
           <v-icon icon="mdi-share-variant" size="18" />
         </v-btn>
+
         <v-btn
-          icon
-          variant="tonal"
           color="secondary"
+          icon
           size="small"
           title="加入收藏"
+          variant="tonal"
           @click="handleFavorite"
         >
-          <v-icon :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'" size="18" :color="isFavorite ? '#EF4628' : ''" />
+          <v-icon :color="isFavorite ? '#EF4628' : ''" :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'" size="18" />
         </v-btn>
       </div>
     </div>
 
     <!-- 載入狀態 -->
     <div v-if="isLoading" class="text-center py-12">
-      <v-progress-circular indeterminate color="primary" size="48" />
+      <v-progress-circular color="primary" indeterminate size="48" />
       <p class="mt-4 text-grey">讀取防災商品資料中...</p>
     </div>
 
     <!-- 找不到商品 / 下架 -->
-    <v-card v-else-if="!activeProduct || !activeProduct.sell" flat class="pa-8 text-center rounded-lg bg-white">
-      <v-icon icon="mdi-package-variant-remove" size="64" color="warning" class="mb-4" />
+    <v-card v-else-if="!activeProduct || !activeProduct.sell" class="pa-8 text-center rounded-lg bg-white" flat>
+      <v-icon class="mb-4" color="warning" icon="mdi-package-variant-remove" size="64" />
       <h2 class="text-h6 font-weight-bold color-dark mb-2">商品暫無供應或已下架</h2>
       <p class="text-body-2 text-grey mb-6">您查看的防災物資暫時無法供貨或網址無效。</p>
-      <v-btn color="primary" to="/shop" class="font-weight-bold">
+
+      <v-btn class="font-weight-bold" color="primary" to="/shop">
         返回災防商城
       </v-btn>
     </v-card>
@@ -60,11 +62,11 @@
           <div class="product-gallery-card pa-4 rounded-xl bg-white mb-4">
             <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
               <v-img
-                :src="activeProduct.imageUrl"
+                :alt="activeProduct.name"
+                class="product-main-img h-100"
                 cover
                 position="center center"
-                class="product-main-img h-100"
-                :alt="activeProduct.name"
+                :src="activeProduct.imageUrl"
               />
             </v-responsive>
           </div>
@@ -72,15 +74,17 @@
           <!-- 防災認證標籤盒 -->
           <div class="d-flex ga-3 flex-wrap">
             <div class="spec-pill flex-1 d-flex align-center justify-center pa-3 rounded-lg bg-white">
-              <v-icon icon="mdi-shield-check" color="#17D7BA" class="mr-2" size="20" />
+              <v-icon class="mr-2" color="#17D7BA" icon="mdi-shield-check" size="20" />
               <span class="fs-13 font-weight-bold color-dark">SGS 檢驗合格</span>
             </div>
+
             <div class="spec-pill flex-1 d-flex align-center justify-center pa-3 rounded-lg bg-white">
-              <v-icon icon="mdi-truck-fast-outline" color="#3C3C5A" class="mr-2" size="20" />
+              <v-icon class="mr-2" color="#3C3C5A" icon="mdi-truck-fast-outline" size="20" />
               <span class="fs-13 font-weight-bold color-dark">24H 優先出貨</span>
             </div>
+
             <div class="spec-pill flex-1 d-flex align-center justify-center pa-3 rounded-lg bg-white">
-              <v-icon icon="mdi-certificate-outline" color="#FFD800" class="mr-2" size="20" />
+              <v-icon class="mr-2" color="#FFD800" icon="mdi-certificate-outline" size="20" />
               <span class="fs-13 font-weight-bold color-dark">3年 極限品質保固</span>
             </div>
           </div>
@@ -92,8 +96,9 @@
             <div>
               <div class="d-flex align-center justify-space-between mb-3">
                 <span class="category-badge px-3 py-1 rounded-pill">{{ activeProduct.category }}</span>
+
                 <span class="stock-badge d-flex align-center">
-                  <v-icon icon="mdi-check-circle" size="16" color="#17D7BA" class="mr-1" />
+                  <v-icon class="mr-1" color="#17D7BA" icon="mdi-check-circle" size="16" />
                   現貨供應中
                 </span>
               </div>
@@ -121,6 +126,7 @@
               <!-- 數量控制器 -->
               <div class="quantity-section mb-6">
                 <label class="qty-label mb-2 d-block font-weight-bold">購買數量：</label>
+
                 <div class="d-flex align-center ga-3">
                   <div class="quantity-controller d-flex align-center">
                     <button
@@ -130,13 +136,15 @@
                     >
                       <v-icon icon="mdi-minus" size="16" />
                     </button>
+
                     <input
                       v-model.number="quantity"
-                      type="number"
-                      min="1"
-                      max="99"
                       class="qty-input text-center"
+                      max="99"
+                      min="1"
+                      type="number"
                     >
+
                     <button
                       class="qty-btn"
                       @click="quantity < 99 && quantity++"
@@ -144,6 +152,7 @@
                       <v-icon icon="mdi-plus" size="16" />
                     </button>
                   </div>
+
                   <span class="text-caption text-grey">每筆訂單限購 99 件</span>
                 </div>
               </div>
@@ -152,21 +161,22 @@
             <!-- 按鈕動作區 -->
             <div class="action-buttons-group d-flex ga-3 flex-column flex-sm-row">
               <v-btn
-                color="secondary"
-                size="x-large"
                 class="flex-1 font-weight-bold btn-cart"
-                prepend-icon="mdi-cart-plus"
+                color="secondary"
                 :loading="isSubmitting"
+                prepend-icon="mdi-cart-plus"
+                size="x-large"
                 @click="handleAddToCart"
               >
                 加入購物車
               </v-btn>
+
               <v-btn
-                color="primary"
-                size="x-large"
                 class="flex-1 font-weight-bold btn-buy"
-                prepend-icon="mdi-flash"
+                color="primary"
                 :loading="isSubmitting"
+                prepend-icon="mdi-flash"
+                size="x-large"
                 @click="handleBuyNow"
               >
                 立即購買
@@ -178,14 +188,15 @@
 
       <!-- 下方詳細規格與防災應變說明 Tab 分頁 -->
       <section class="detail-tabs-section mt-10">
-        <v-card flat class="rounded-xl overflow-hidden bg-white">
-          <v-tabs v-model="tab" color="secondary" bg-color="#F8F9FD" grow>
-            <v-tab value="specs" class="font-weight-bold">
-              <v-icon icon="mdi-text-box-outline" class="mr-2" />
+        <v-card class="rounded-xl overflow-hidden bg-white" flat>
+          <v-tabs v-model="tab" bg-color="#F8F9FD" color="secondary" grow>
+            <v-tab class="font-weight-bold" value="specs">
+              <v-icon class="mr-2" icon="mdi-text-box-outline" />
               商品詳細規格
             </v-tab>
-            <v-tab value="guide" class="font-weight-bold">
-              <v-icon icon="mdi-shield-alert-outline" class="mr-2" />
+
+            <v-tab class="font-weight-bold" value="guide">
+              <v-icon class="mr-2" icon="mdi-shield-alert-outline" />
               災時應變使用指南
             </v-tab>
           </v-tabs>
@@ -196,20 +207,24 @@
               <v-window-item value="specs">
                 <div class="specs-content">
                   <h3 class="tab-title mb-4">產品安全規格與注意事項</h3>
+
                   <v-table class="specs-table border rounded-lg">
                     <tbody>
                       <tr>
                         <td class="font-weight-bold bg-grey-lighten-4 width-160">品名</td>
                         <td>{{ activeProduct.name }}</td>
                       </tr>
+
                       <tr>
                         <td class="font-weight-bold bg-grey-lighten-4">分類</td>
                         <td>{{ activeProduct.category }}</td>
                       </tr>
+
                       <tr>
                         <td class="font-weight-bold bg-grey-lighten-4">安全防護等級</td>
                         <td>符合國家CNS防災防護認證標準 / ISO 9001品質管理</td>
                       </tr>
+
                       <tr>
                         <td class="font-weight-bold bg-grey-lighten-4">產地與保固</td>
                         <td>台灣設計製造 / 享 30 天鑑賞期與 3 年原廠極限品質保固</td>
@@ -223,14 +238,16 @@
               <v-window-item value="guide">
                 <div class="guide-content">
                   <h3 class="tab-title mb-3">黃金 72 小時緊急使用情境指引</h3>
+
                   <p class="text-body-1 text-grey-darken-2 mb-4">
                     當遭逢大規模地震、強烈颱風停電或緊急疏散命令時，本項裝備能為您與家人提供最關鍵的即時防護與通訊能力。
                   </p>
+
                   <v-alert
+                    class="rounded-lg mb-4 text-dark font-weight-bold"
                     color="#FFD800"
                     icon="mdi-lightbulb-on"
                     variant="tonal"
-                    class="rounded-lg mb-4 text-dark font-weight-bold"
                   >
                     提示：建議將此裝備擺放於靠近玄關或主要逃生路線的「緊急避難包」內，並至少每半年進行一次檢驗與功能測試。
                   </v-alert>
@@ -244,7 +261,7 @@
       <!-- 相關防災商品推薦 -->
       <section v-if="relatedProducts.length > 0" class="related-products-section mt-12">
         <div class="d-flex align-center mb-6">
-          <div class="title-bar mr-3"></div>
+          <div class="title-bar mr-3" />
           <h2 class="section-title mb-0">推薦相關防災裝備</h2>
         </div>
 
@@ -253,22 +270,25 @@
             v-for="item in relatedProducts"
             :key="item._id"
             cols="12"
-            sm="6"
             md="3"
+            sm="6"
           >
             <v-card
-              flat
               class="related-product-card rounded-lg h-100 pa-2 cursor-pointer"
+              flat
               @click="router.push(`/product/${item._id}`)"
             >
               <v-responsive aspect-ratio="1.3333">
-                <v-img :src="item.imageUrl" cover class="rounded-lg h-100 bg-grey-lighten-2" />
+                <v-img class="rounded-lg h-100 bg-grey-lighten-2" cover :src="item.imageUrl" />
               </v-responsive>
+
               <v-card-text class="pa-3">
                 <span class="category-badge small mb-2 d-inline-block">{{ item.category }}</span>
+
                 <h4 class="related-name text-clamp-2 mb-2" :title="item.name">
                   {{ item.name }}
                 </h4>
+
                 <div class="related-price">NT$ {{ item.price.toLocaleString() }}</div>
               </v-card-text>
             </v-card>
@@ -424,7 +444,7 @@
     if (!activeProduct.value) return
 
     // 檢查是否為合法 24 碼 MongoDB ObjectId，避免假資料 id (如 p1) 傳入後端報錯
-    if (!/^[0-9a-fA-F]{24}$/.test(activeProduct.value._id)) {
+    if (!/^[0-9a-f]{24}$/i.test(activeProduct.value._id)) {
       snackbar.add({ text: '此為示範商品，無法加入購物車', color: 'warning' })
       return
     }
@@ -438,8 +458,8 @@
       })
       snackbar.add({ text: `已將 ${quantity.value} 件商品加入購物車`, color: 'green' })
       cartDrawerStore.open()
-    } catch (err) {
-      snackbar.addError(err)
+    } catch (error_) {
+      snackbar.addError(error_)
     } finally {
       isSubmitting.value = false
     }
