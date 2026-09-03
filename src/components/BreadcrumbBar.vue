@@ -84,8 +84,9 @@
       ]
     }
     // 災防知識詳細頁 /news/:id 處理
-    if (route.path.startsWith('/news/') && route.params.id) {
-      const rawId = String(route.params.id)
+    const params = route.params as Record<string, any>
+    if (route.path.startsWith('/news/') && params.id) {
+      const rawId = String(params.id)
       let found = newsStore.newsList.find(n => n.id === rawId || n.id === `news-${rawId}`)
       if (!found) {
         const numericIndex = Number.parseInt(rawId, 10)
@@ -101,7 +102,7 @@
       ]
     }
     // 防災商品詳細頁 /product/:id 處理
-    if (route.path.startsWith('/product/') && route.params.id) {
+    if (route.path.startsWith('/product/') && params.id) {
       const prodTitle = document.title ? document.title.replace(' - 災防商城', '') : (route.meta?.title || '防災商品詳細')
       return [
         rootItem.value,

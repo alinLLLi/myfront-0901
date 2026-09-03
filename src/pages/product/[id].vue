@@ -309,7 +309,7 @@
   import { useSnackbarStore } from '@/stores/snackbar'
   import { useUserStore } from '@/stores/user'
 
-  const route = useRoute()
+  const route = useRoute('/product/[id]')
   const router = useRouter()
   const user = useUserStore()
   const snackbar = useSnackbarStore()

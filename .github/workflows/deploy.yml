@@ -10,6 +10,8 @@ jobs:
   deploy:
     # 執行工作的虛擬機作業系統
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     # 工作步驟
     steps:
       # 步驟一：複製程式碼

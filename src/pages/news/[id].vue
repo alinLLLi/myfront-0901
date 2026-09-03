@@ -233,7 +233,7 @@
   import { useSnackbarStore } from '@/stores/snackbar'
   import { type INews, useNewsStore } from '@/stores/news'
 
-  const route = useRoute()
+  const route = useRoute('/news/[id]')
   const router = useRouter()
   const snackbar = useSnackbarStore()
   const newsStore = useNewsStore()
