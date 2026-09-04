@@ -1,4 +1,4 @@
-﻿import type { KnowledgeForm } from '@/types/knowledge'
+import type { KnowledgeForm } from '@/types/knowledge'
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { useRoute } from 'vue-router'
 import * as knowledge from '@/services/knowledge'
@@ -30,14 +30,14 @@ export const useGetAllQuery = defineQuery(() => {
 })
 
 export const useGetIdQuery = defineQuery(() => {
-  const route = useRoute() // ✅ 移除 '/news/[id]' 參數
+  const route = useRoute('/news/[id]')
   return useQuery({
     key: () => ['knowledge', route.params.id],
     query: async () => {
       if (!/^[0-9a-fA-F]{24}$/.test(String(route.params.id))) {
         return null
       }
-      const { data } = await knowledge.getId(route.params.id as string)
+      const { data } = await knowledge.getId(route.params.id)
       return data.result
     },
     staleTime: STALE_TIME,
