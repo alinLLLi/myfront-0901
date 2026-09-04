@@ -1,4 +1,4 @@
-﻿export const categoryOptions = [
+export const categoryOptions = [
   '地震防護',
   '颱風防汛',
   '火災避難',

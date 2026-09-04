@@ -1,33 +1,51 @@
 # Action 名稱
 name: Deploy
-# 觸發時機，當推送到分支 master 時
+
+# 觸發時機，當推送到分支 main 時
 on:
   push:
     branches: [main]
+
+# 避免連續 push 時多個工作重複執行或搶佔部署（自動取消前一個尚未完成的工作）
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 # 執行的工作
 jobs:
   # 工作名稱
   deploy:
     # 執行工作的虛擬機作業系統
     runs-on: ubuntu-latest
+    timeout-minutes: 15 # 防止卡住時無限執行（預設上限為 6 小時）
     permissions:
       contents: write
+
     # 工作步驟
     steps:
       # 步驟一：複製程式碼
-      - name: checkout
-        # 使用的 actions/checkout 複製程式碼
-        uses: actions/checkout@v5
-      # 步驟二：編譯
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 步驟二：設定 Node.js 環境並啟用 npm 快取
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # 步驟三：安裝依賴與編譯（在 CI 使用 npm ci 比 npm install 更乾淨且快速）
       - name: Install and Build
         run: |
-          npm install
+          npm ci
           npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-      # 步驟三：部署
+
+      # 步驟四：部署到 GitHub Pages
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
+

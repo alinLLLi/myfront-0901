@@ -1,4 +1,4 @@
-﻿import type { ApiResponse } from '@/types/api'
+import type { ApiResponse } from '@/types/api'
 import type { IKnowledge, KnowledgeForm } from '@/types/knowledge'
 import type { AxiosResponse } from 'axios'
 import { api, apiAuth } from '@/utils/api'
