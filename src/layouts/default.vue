@@ -7,7 +7,7 @@
     <div
       v-if="isMobileMenuOpen"
       class="sidebar-backdrop"
-      @click="isMobileMenuOpen = false"
+      @click.self="isMobileMenuOpen = false"
     />
 
     <!-- 1. Fixed Left Sidebar Main Menu (主選單 240px x 100vh) -->
@@ -236,7 +236,6 @@
   import BreadcrumbBar from '@/components/BreadcrumbBar.vue'
   import CartDrawer from '@/components/CartDrawer.vue'
   import MascotLogo from '@/components/MascotLogo.vue'
-  import MascotLogoMobile from '@/components/MascotLogoMobile.vue'
   import { useLogoutMutation } from '@/quries/auth'
   import { useCartDrawerStore } from '@/stores/cartDrawer'
   import { useSnackbarStore } from '@/stores/snackbar'

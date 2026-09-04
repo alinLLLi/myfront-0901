@@ -108,17 +108,22 @@
 
 <script setup lang="ts">
   import { useForm } from 'vee-validate'
-  import { computed, onMounted, ref, useTemplateRef } from 'vue'
+  import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import * as yup from 'yup'
-  import { useNewsStore } from '@/stores/news'
+  import { useCreateMutation, useGetAllQuery, useUpdateMutation } from '@/quries/knowledge'
+  import { getId } from '@/services/knowledge'
   import { useSnackbarStore } from '@/stores/snackbar'
+  import type { TCategoryOptions } from '@/types/knowledge'
 
   const route = useRoute()
   const router = useRouter()
   const fileAgent = useTemplateRef('fileAgent')
   const snackbar = useSnackbarStore()
-  const newsStore = useNewsStore()
+
+  const { mutateAsync: createMutate } = useCreateMutation()
+  const { mutateAsync: updateMutate } = useUpdateMutation()
+  const { data: knowledges } = useGetAllQuery()
 
   const newsId = computed(() => (route.query.id as string) || '')
   const isEdit = computed(() => Boolean(newsId.value))
@@ -156,17 +161,44 @@
   const fileRecords = ref<any[]>([])
   const rawFileRecords = ref<any[]>([])
 
-  onMounted(() => {
+  function populateData (item: any) {
+    if (!item) return
+    title.value = item.title
+    category.value = item.category || '地震防護'
+    summary.value = item.summary || item.description || ''
+    published.value = item.published !== undefined ? item.published : true
+  }
+
+  onMounted(async () => {
     if (isEdit.value) {
-      const item = newsStore.getNewsById(newsId.value)
+      const item = knowledges.value?.find(k => k._id === newsId.value || k.id === newsId.value)
       if (item) {
-        title.value = item.title
-        category.value = item.category
-        summary.value = item.summary
-        published.value = item.published
+        populateData(item)
+      } else {
+        try {
+          const res = await getId(newsId.value)
+          if (res.data?.result) {
+            populateData(res.data.result)
+          }
+        } catch {
+          // ignore
+        }
       }
     }
   })
+
+  watch(
+    () => knowledges.value,
+    newVal => {
+      if (isEdit.value && newVal && !title.value) {
+        const item = newVal.find(k => k._id === newsId.value || k.id === newsId.value)
+        if (item) {
+          populateData(item)
+        }
+      }
+    },
+    { immediate: true },
+  )
 
   function clearForm () {
     resetForm()
@@ -181,20 +213,25 @@
       return
     }
 
+    if (!isEdit.value && fileRecords.value.length === 0) {
+      snackbar.add({ text: '缺少災防知識封面圖片', color: 'red' })
+      return
+    }
+
     try {
-      const fileImage = fileRecords.value[0]?.file
-      if (isEdit.value) {
-        await newsStore.updateNews(newsId.value, {
-          ...values,
-          fileImage,
-        })
-      } else {
-        await newsStore.addNews({
-          ...values,
-          image: '',
-          fileImage,
-        })
+      const data = {
+        title: values.title,
+        category: values.category as TCategoryOptions,
+        description: values.summary,
+        summary: values.summary,
+        published: values.published,
+        image: fileRecords.value[0]?.file,
       }
+
+      await (isEdit.value
+        ? updateMutate({ id: newsId.value, data })
+        : createMutate(data)
+      )
 
       snackbar.add({ text: '儲存成功', color: 'green' })
       router.push('/admin/news')

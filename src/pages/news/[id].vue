@@ -70,7 +70,7 @@
           <span class="category-pill">{{ article.category }}</span>
           <span class="date-text d-flex align-center text-grey fs-14">
             <v-icon icon="mdi-clock-outline" size="16" class="mr-1" />
-            {{ article.date }}
+            {{ article.date || (article.createdAt ? new Date(article.createdAt).toISOString().split('T')[0] : '') }}
           </span>
           <span class="read-time d-flex align-center text-grey fs-14">
             <v-icon icon="mdi-book-open-outline" size="16" class="mr-1" />
@@ -86,7 +86,7 @@
         <div class="article-summary-box pa-4 rounded-lg">
           <p class="summary-text mb-0">
             <v-icon icon="mdi-format-quote-open" size="20" color="#3C3C5A" class="mr-1" />
-            {{ article.summary }}
+            {{ article.summary || article.description }}
           </p>
         </div>
       </header>
@@ -95,7 +95,7 @@
       <div class="hero-image-wrapper mb-8 rounded-lg overflow-hidden">
         <v-responsive aspect-ratio="1.3333">
           <v-img
-            :src="article.image"
+            :src="article.imageUrl || article.image"
             cover
             position="center center"
             class="hero-img h-100"
@@ -200,24 +200,24 @@
         <v-row>
           <v-col
             v-for="item in relatedArticles"
-            :key="item.id"
+            :key="item._id || item.id"
             cols="12"
             md="4"
           >
             <v-card
               flat
               class="related-card rounded-lg h-100 pa-2 cursor-pointer"
-              @click="navigateToArticle(item.id)"
+              @click="navigateToArticle(item._id || item.id)"
             >
               <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
-                <v-img :src="item.image" cover position="center center" class="h-100" />
+                <v-img :src="item.imageUrl || item.image" cover position="center center" class="h-100" />
               </v-responsive>
               <v-card-text class="pa-3">
                 <span class="category-pill small mb-2 d-inline-block">{{ item.category }}</span>
                 <h4 class="related-title text-clamp-2 mb-2" :title="item.title">
                   {{ item.title }}
                 </h4>
-                <span class="date-text fs-12 text-grey">{{ item.date }}</span>
+                <span class="date-text fs-12 text-grey">{{ item.date || (item.createdAt ? new Date(item.createdAt).toISOString().split('T')[0] : '') }}</span>
               </v-card-text>
             </v-card>
           </v-col>
@@ -231,42 +231,49 @@
   import { computed, ref, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useSnackbarStore } from '@/stores/snackbar'
-  import { type INews, useNewsStore } from '@/stores/news'
+  import { useGetQuery } from '@/quries/knowledge'
+  import { defaultNewsList, type INews } from '@/stores/news'
 
   const route = useRoute('/news/[id]')
   const router = useRouter()
   const snackbar = useSnackbarStore()
-  const newsStore = useNewsStore()
+  const { data: knowledgesData, isLoading: loading } = useGetQuery()
 
-  const loading = ref(false)
   const isBookmarked = ref(false)
 
-  // 取得路由網址上的文章 ID (例如 '1', 'news-1', 等)
+  // 取得路由網址上的文章 ID (例如 '6a8efd9561d4c68a3b87b7d6', '1', 'news-1', 等)
   const articleId = computed(() => {
     return String(route.params.id || '1')
   })
 
-  // 比對 store 中的文章資料
-  const article = computed<INews | undefined>(() => {
+  const allArticles = computed<any[]>(() => {
+    if (knowledgesData.value && knowledgesData.value.length > 0) {
+      return knowledgesData.value
+    }
+    return defaultNewsList
+  })
+
+  // 比對文章資料
+  const article = computed<any>(() => {
     const rawId = articleId.value
-    // 試圖尋找 ID 恰好等於 rawId 的文章 (例如 '1' 或 'news-1')
-    let found = newsStore.newsList.find(n => n.id === rawId || n.id === `news-${rawId}`)
+    const list = allArticles.value
+
+    let found = list.find(n => n._id === rawId || n.id === rawId || n.id === `news-${rawId}`)
     if (!found) {
-      // 若傳入純數字，尋找第 (Index - 1) 篇或是數值比對
       const numericIndex = Number.parseInt(rawId, 10)
-      if (!Number.isNaN(numericIndex) && numericIndex > 0 && numericIndex <= newsStore.newsList.length) {
-        found = newsStore.newsList[numericIndex - 1]
+      if (!Number.isNaN(numericIndex) && numericIndex > 0 && numericIndex <= list.length) {
+        found = list[numericIndex - 1]
       }
     }
-    // 若依然找不到，回傳預設第一篇文章
-    return found || newsStore.newsList[0]
+    return found || list[0]
   })
 
   // 相關延伸閱讀 (排除了當前文章)
   const relatedArticles = computed(() => {
     if (!article.value) return []
-    return newsStore.newsList
-      .filter(item => item.id !== article.value?.id && item.published)
+    const currentId = article.value._id || article.value.id
+    return allArticles.value
+      .filter(item => (item._id || item.id) !== currentId && item.published !== false)
       .slice(0, 3)
   })
 

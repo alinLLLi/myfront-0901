@@ -8,7 +8,7 @@
     <v-row>
       <v-col
         v-for="news in publishedNews"
-        :key="news.id"
+        :key="news._id || news.id"
         cols="12"
         lg="3"
         md="6"
@@ -17,16 +17,16 @@
         <v-card
           class="news-card rounded-lg h-100 d-flex flex-column cursor-pointer"
           flat
-          :to="'/news/' + (news.id.startsWith('news-') ? news.id.replace('news-', '') : news.id)"
+          :to="'/news/' + (news._id || (news.id && news.id.startsWith('news-') ? news.id.replace('news-', '') : news.id))"
         >
           <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
-            <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="news.image" />
+            <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="news.imageUrl || news.image" />
           </v-responsive>
 
           <v-card-text class="pa-4 d-flex flex-column">
             <div class="d-flex align-center justify-space-between mb-2">
               <span class="news-tag px-3 py-1 rounded-pill">{{ news.category }}</span>
-              <span class="news-date">{{ news.date }}</span>
+              <span class="news-date">{{ news.date || (news.createdAt ? new Date(news.createdAt).toISOString().split('T')[0] : '') }}</span>
             </div>
 
             <h2 class="news-title text-clamp-2 mb-3" :title="news.title">
@@ -34,7 +34,7 @@
             </h2>
 
             <p class="news-desc text-clamp-3 mb-0">
-              {{ news.summary }}
+              {{ news.summary || news.description }}
             </p>
           </v-card-text>
         </v-card>
@@ -45,12 +45,16 @@
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { useNewsStore } from '@/stores/news'
+  import { useGetQuery } from '@/quries/knowledge'
+  import { defaultNewsList } from '@/stores/news'
 
-  const newsStore = useNewsStore()
+  const { data: knowledgesData } = useGetQuery()
 
   const publishedNews = computed(() => {
-    return newsStore.newsList.filter(item => item.published)
+    if (knowledgesData.value && knowledgesData.value.length > 0) {
+      return knowledgesData.value
+    }
+    return defaultNewsList
   })
 </script>
 

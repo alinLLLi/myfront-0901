@@ -8,7 +8,9 @@ export interface INews {
   date: string
   title: string
   summary: string
+  description?: string
   image: string
+  imageUrl?: string
   published: boolean
   createdAt?: string
   updatedAt?: string
@@ -16,7 +18,7 @@ export interface INews {
 
 const STORAGE_KEY = 'disaster_news_list'
 
-const defaultNewsList: INews[] = [
+export const defaultNewsList: INews[] = [
   {
     id: 'news-1',
     category: '地震防護',

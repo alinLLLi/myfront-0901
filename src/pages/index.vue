@@ -128,15 +128,15 @@
             :key="news._id || news.id"
             class="news-card rounded-lg h-100"
             flat
-            :to="'/news/' + (news._id || (news.id.startsWith('news-') ? news.id.replace('news-', '') : news.id))"
+            :to="'/news/' + (news._id || news.id || '')"
           >
             <!-- 4:3 Image ratio (垂直居中對齊與遮蔽溢出) -->
             <v-responsive aspect-ratio="1.3333" class="rounded-lg overflow-hidden">
-              <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="news.image" />
+              <v-img class="h-100 bg-grey-lighten-2" cover position="center center" :src="news.imageUrl || news.image" />
             </v-responsive>
 
             <v-card-text class="pa-4 d-flex flex-column">
-              <span class="news-date mb-2">{{ news.date }}</span>
+              <span class="news-date mb-2">{{ news.date || (news.createdAt ? new Date(news.createdAt).toISOString().split('T')[0] : '') }}</span>
 
               <h3 class="news-title text-clamp-2" :title="news.title">
                 {{ news.title }}
@@ -235,8 +235,9 @@
   import { computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useGetQuery as useGetProducts } from '@/quries/product'
+  import { useGetQuery as useGetKnowledge } from '@/quries/knowledge'
   import { useAddCartMutation } from '@/quries/user'
-  import { useNewsStore } from '@/stores/news'
+  import { defaultNewsList, useNewsStore } from '@/stores/news'
   import { useSnackbarStore } from '@/stores/snackbar'
   import { useUserStore } from '@/stores/user'
 
@@ -246,10 +247,12 @@
   const newsStore = useNewsStore()
   const { mutateAsync: addCartMutate } = useAddCartMutation()
   const { data: productsData } = useGetProducts()
+  const { data: knowledgeData } = useGetKnowledge()
 
-  // 4. 動態連結災防知識 Store 最新 4 篇文章
+  // 4. 動態連結災防知識最新 4 篇文章 (比照 Product 從後端獲取，並有預設備援)
   const latestNews = computed(() => {
-    return newsStore.newsList.filter(item => item.published).slice(0, 4)
+    const list = knowledgeData.value && knowledgeData.value.length > 0 ? knowledgeData.value : defaultNewsList
+    return list.filter((item: any) => item.published !== false).slice(0, 4)
   })
 
   // Fallback product items if backend is empty

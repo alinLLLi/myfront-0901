@@ -20,11 +20,12 @@
       <v-data-table
         :filter-keys="filterKeys"
         :headers="headers"
-        :items="newsStore.newsList"
+        :items="knowledges"
+        :loading="isLoading"
         :search="search"
       >
-        <template #[`item.image`]="{ value }">
-          <v-img aspect-ratio="1.3333" :src="value" width="60" class="rounded border" />
+        <template #[`item.imageUrl`]="{ item }">
+          <v-img aspect-ratio="1.3333" :src="item.imageUrl || item.image" width="60" class="rounded border" />
         </template>
 
         <template #[`item.published`]="{ value }">
@@ -38,14 +39,24 @@
         </template>
 
         <template #[`item.action`]="{ item }">
-          <v-btn
-            icon="mdi-pencil"
-            size="small"
-            variant="text"
-            color="secondary"
-            :to="'/admin/news-form?id=' + item.id"
-            title="編輯災防知識"
-          />
+          <div class="d-flex align-center">
+            <v-btn
+              icon="mdi-pencil"
+              size="small"
+              variant="text"
+              color="secondary"
+              :to="'/admin/news-form?id=' + (item._id || item.id)"
+              title="編輯災防知識"
+            />
+            <v-btn
+              icon="mdi-delete"
+              size="small"
+              variant="text"
+              color="red"
+              title="刪除災防知識"
+              @click="handleDelete(String(item._id || item.id))"
+            />
+          </div>
         </template>
 
         <template #top>
@@ -68,23 +79,36 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useNewsStore } from '@/stores/news'
+  import { useGetAllQuery, useDeleteMutation } from '@/quries/knowledge'
+  import { useSnackbarStore } from '@/stores/snackbar'
 
-  const newsStore = useNewsStore()
+  const { data: knowledges, isLoading } = useGetAllQuery()
+  const { mutateAsync: deleteMutate } = useDeleteMutation()
+  const snackbar = useSnackbarStore()
 
   const headers = [
-    { title: 'ID', key: 'id' },
-    { title: '封面圖片', key: 'image', sortable: false },
+    { title: 'ID', key: '_id' },
+    { title: '封面圖片', key: 'imageUrl', sortable: false },
     { title: '標題', key: 'title' },
     { title: '分類', key: 'category' },
-    { title: '摘要內容', key: 'summary' },
+    { title: '摘要內容', key: 'summary', value: (item: any) => item.summary || item.description },
     { title: '發布狀態', key: 'published' },
-    { title: '發布日期', key: 'date' },
+    { title: '發布日期', key: 'date', value: (item: any) => item.date || (item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '') },
     { title: '操作', key: 'action', sortable: false },
   ]
 
   const search = ref('')
-  const filterKeys = ['id', 'title', 'category', 'summary', 'date']
+  const filterKeys = ['_id', 'title', 'category', 'summary', 'description', 'date']
+
+  async function handleDelete (id: string) {
+    if (!window.confirm('確定要刪除這筆災防知識嗎？')) return
+    try {
+      await deleteMutate(id)
+      snackbar.add({ text: '刪除成功', color: 'green' })
+    } catch (error) {
+      snackbar.addError(error)
+    }
+  }
 </script>
 
 <style scoped>
