@@ -7,15 +7,16 @@ import * as knowledge from '@/services/knowledge'
 const STALE_TIME = 1000 * 60 * 5
 
 export const useGetQuery = defineQuery(() => {
-  return useQuery({
-    key: ['knowledge', 'public'],
-    query: async () => {
-      const { data } = await knowledge.get()
-      return data.result
-    },
-    staleTime: STALE_TIME,
-  })
-})
+      return useQuery({
+        key: ['knowledge', 'public'],
+        query: async () => {
+          const { data } = await knowledge.get()
+          return data.result
+        },
+        staleTime: 0, // 設為 0 或縮短，確保回首頁能獲取最新資料
+        refetchOnMount: 'always',
+      })
+    })
 
 export const useGetAllQuery = defineQuery(() => {
   return useQuery({
@@ -29,14 +30,14 @@ export const useGetAllQuery = defineQuery(() => {
 })
 
 export const useGetIdQuery = defineQuery(() => {
-  const route = useRoute('/news/[id]')
+  const route = useRoute() // ✅ 移除 '/news/[id]' 參數
   return useQuery({
     key: () => ['knowledge', route.params.id],
     query: async () => {
       if (!/^[0-9a-fA-F]{24}$/.test(String(route.params.id))) {
         return null
       }
-      const { data } = await knowledge.getId(route.params.id)
+      const { data } = await knowledge.getId(route.params.id as string)
       return data.result
     },
     staleTime: STALE_TIME,
@@ -57,7 +58,8 @@ export const useCreateMutation = defineMutation(() => {
 export const useUpdateMutation = defineMutation(() => {
   return useMutation({
     mutation: ({ id, data }: { id: string, data: KnowledgeForm }) => knowledge.update(id, data),
-    onSuccess: (response, { id }) => {
+    // ✅ 為第二個參數標註型別 ({ id }: { id: string })
+    onSuccess: (response, { id }: { id: string; data: KnowledgeForm }) => {
       const queryCache = useQueryCache()
       queryCache.invalidateQueries({ key: ['knowledge', 'public'] })
       queryCache.invalidateQueries({ key: ['knowledge', 'all'] })
