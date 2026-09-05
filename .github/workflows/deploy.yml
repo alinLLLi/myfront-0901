@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: "npm"
 
       # 步驟三：安裝依賴與編譯（在 CI 使用 npm ci 比 npm install 更乾淨且快速）
       - name: Install and Build
@@ -48,4 +48,3 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-

@@ -45,6 +45,12 @@ export default defineConfig({
       '.ts',
       '.tsx',
       '.vue',
+      '.css',
+      '.scss',
+      '.sass',
+      '.css', // 👈 新增
+      '.scss', // 👈 新增
+      '.sass', // 👈 新增
     ],
   },
   server: {
