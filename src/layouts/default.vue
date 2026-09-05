@@ -39,7 +39,7 @@
           @click="handleNavClick('/disaster')"
         >
           <v-icon class="emergency-icon mr-2" color="#EF4628" icon="mdi-alert-circle" size="24" />
-          <span class="banner-text text-dark">災時極簡模式00</span>
+          <span class="banner-text text-dark">災時極簡模式</span>
         </button>
 
         <!-- 手機版主選單 "災時極簡模式" 下方的 登入 / 登出 按鈕 (桌機版時隱藏 d-md-none) -->
