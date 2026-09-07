@@ -1,96 +1,93 @@
 <template>
   <div class="home-page-container">
-    <!-- 3. 形象圖片滿版顯示 (寬度扣除主選單 240px，隨滾動移動視窗下移) -->
+    <!-- 3. 形象圖片滿版顯示 (主視覺套用 Studio Carousel 輪播效果) -->
     <section class="hero-banner-section mb-6 mb-md-8">
       <div class="hero-banner-wrapper">
-        <svg
-          class="hero-banner-svg"
-          preserveAspectRatio="xMidYMid slice"
-          viewBox="0 0 1200 400"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="sd appear _animatingNext _playing hero-studio-carousel"
+          data-s-c81fe1a0-dc63-4129-8c5a-bb0c1de18a7f=""
+          data-type="carousel"
+          @mouseenter="stopHeroAutoPlay"
+          @mouseleave="startHeroAutoPlay"
         >
-          <defs>
-            <linearGradient
-              id="heroGradient"
-              x1="0%"
-              x2="100%"
-              y1="0%"
-              y2="100%"
-            >
-              <stop offset="0%" stop-color="#3C3C5A" />
-              <stop offset="50%" stop-color="#4B4B6E" />
-              <stop offset="100%" stop-color="#17D7BA" />
-            </linearGradient>
+          <div
+            class="hero-carousel-track"
+            :style="{
+              transform: `translateX(-${(heroSlideIndex + 1) * 100}%)`,
+              transition: isHeroTransitioning ? 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)' : 'none'
+            }"
+          >
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd appear _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd appear _animatingNext _playing __ariaHidden" data-r-1_-2_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-            <linearGradient
-              id="yellowAccent"
-              x1="0%"
-              x2="100%"
-              y1="0%"
-              y2="0%"
-            >
-              <stop offset="0%" stop-color="#FFD800" stop-opacity="0.8" />
-              <stop offset="100%" stop-color="#FFD800" stop-opacity="0" />
-            </linearGradient>
-          </defs>
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd _animatingNext _playing __ariaHidden" data-r-1_-1_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-          <rect fill="url(#heroGradient)" height="400" width="1200" />
-          <!-- Decorative shapes -->
-          <circle cx="1050" cy="80" fill="url(#yellowAccent)" r="180" />
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd _animatingNext _playing __ariaHidden" data-r-1_0_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-          <path
-            d="M-50 320 Q 300 240, 650 340 T 1300 300"
-            fill="none"
-            stroke="#FFFFFF"
-            stroke-opacity="0.15"
-            stroke-width="40"
-          />
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd _animatingNext _playing __ariaHidden" data-r-1_1_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-          <path
-            d="M0 360 Q 400 280, 800 380 T 1250 320"
-            fill="none"
-            stroke="#17D7BA"
-            stroke-opacity="0.25"
-            stroke-width="20"
-          />
+            <div class="sd appear _animatingNext _playing" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd _animatingNext _playing" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd _animatingNext _playing" data-r-1_2_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-          <!-- Banner Hero Text Content -->
-          <text
-            fill="#FFD800"
-            font-size="44"
-            font-weight="900"
-            letter-spacing="2"
-            x="80"
-            y="150"
-          >全民防災，智慧守護</text>
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd appear _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd appear _animatingNext _playing __ariaHidden" data-r-1_3_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
 
-          <text
-            fill="#FFFFFF"
-            font-size="24"
-            font-weight="500"
-            x="80"
-            y="210"
-          >即時掌握災害新知與避難資訊 ‧ 打造最堅固的安全防護網</text>
+            <div class="sd appear _animatingNext _playing __ariaHidden" data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6="" style="--sd-6f9f037f_002dfe01_002d40ea_002d9c44_002d523242ada0d6-transform: translateX(-100%); transition-duration: 9000ms;">
+              <div class="sd appear _animatingNext _playing __ariaHidden" data-s-b50aa10f-fcbe-4b83-8529-6abbd2613677="" />
+              <div class="image sd appear _animatingNext _playing __ariaHidden" data-r-1_4_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be="" data-s-e85daafc-b4b3-4613-9bc9-b081034ba5be="" />
+            </div>
+          </div>
 
-          <!-- Badge overlay -->
-          <rect
-            fill="#FFD800"
-            height="48"
-            rx="24"
-            width="220"
-            x="80"
-            y="250"
-          />
+          <!-- Hero Text Content Overlay -->
+          <div class="hero-overlay">
+            <div class="hero-content-box">
+              <span class="hero-badge">智慧防災 ‧ 全民守護</span>
+              <h1 class="hero-title">全民防災，智慧守護</h1>
+              <p class="hero-subtitle">即時掌握災害新知與避難資訊 ‧ 打造最堅固的安全防護網</p>
 
-          <text
-            fill="#3C3C5A"
-            font-size="18"
-            font-weight="bold"
-            text-anchor="middle"
-            x="190"
-            y="281"
-          >探索防災專區</text>
-        </svg>
+              <router-link class="hero-cta-btn" to="/news">
+                <span>探索防災專區</span>
+                <v-icon class="ml-1" icon="mdi-arrow-right" size="18" />
+              </router-link>
+            </div>
+
+            <!-- Hero Controls -->
+            <div class="hero-carousel-controls">
+              <button aria-label="上一張" class="hero-arrow prev-btn" title="上一張" @click="prevHeroSlide">
+                <v-icon icon="mdi-chevron-left" size="22" />
+              </button>
+
+              <div class="hero-dots">
+                <span
+                  v-for="(_, idx) in 4"
+                  :key="idx"
+                  class="hero-dot"
+                  :class="{ active: heroSlideIndex % 4 === idx }"
+                  @click="heroSlideIndex = idx"
+                />
+              </div>
+
+              <button aria-label="下一張" class="hero-arrow next-btn" title="下一張" @click="nextHeroSlide">
+                <v-icon icon="mdi-chevron-right" size="22" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -232,10 +229,10 @@
 
 <script setup lang="ts">
   import type { IProduct } from '@/types/product'
-  import { computed } from 'vue'
+  import { computed, onMounted, onUnmounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useGetQuery as useGetProducts } from '@/quries/product'
   import { useGetQuery as useGetKnowledge } from '@/quries/knowledge'
+  import { useGetQuery as useGetProducts } from '@/quries/product'
   import { useAddCartMutation } from '@/quries/user'
   import { defaultNewsList, useNewsStore } from '@/stores/news'
   import { useSnackbarStore } from '@/stores/snackbar'
@@ -248,6 +245,53 @@
   const { mutateAsync: addCartMutate } = useAddCartMutation()
   const { data: productsData } = useGetProducts()
   const { data: knowledgeData } = useGetKnowledge()
+
+  // 主視覺 Studio Carousel 輪播控制
+  const heroSlideIndex = ref(0)
+  const isHeroTransitioning = ref(true)
+  let heroTimer: ReturnType<typeof setInterval> | null = null
+
+  function nextHeroSlide () {
+    isHeroTransitioning.value = true
+    heroSlideIndex.value++
+    if (heroSlideIndex.value >= 4) {
+      setTimeout(() => {
+        isHeroTransitioning.value = false
+        heroSlideIndex.value = 0
+      }, 800)
+    }
+  }
+
+  function prevHeroSlide () {
+    isHeroTransitioning.value = true
+    if (heroSlideIndex.value === 0) {
+      heroSlideIndex.value = 3
+    } else {
+      heroSlideIndex.value--
+    }
+  }
+
+  function startHeroAutoPlay () {
+    stopHeroAutoPlay()
+    heroTimer = setInterval(() => {
+      nextHeroSlide()
+    }, 4500)
+  }
+
+  function stopHeroAutoPlay () {
+    if (heroTimer) {
+      clearInterval(heroTimer)
+      heroTimer = null
+    }
+  }
+
+  onMounted(() => {
+    startHeroAutoPlay()
+  })
+
+  onUnmounted(() => {
+    stopHeroAutoPlay()
+  })
 
   // 4. 動態連結災防知識最新 4 篇文章 (比照 Product 從後端獲取，並有預設備援)
   const latestNews = computed(() => {
@@ -355,13 +399,220 @@
 .hero-banner-wrapper {
   width: 100%;
   height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-studio-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #1e1e2d;
+}
+
+.hero-carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Individual Studio Slide Container */
+.hero-studio-carousel [data-s-6f9f037f-fe01-40ea-9c44-523242ada0d6] {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Studio Design Base SD Elements & Pseudo-element Images */
+:deep(.sd), .sd {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+:deep(.sd.image), .sd.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+:deep(.sd.image::before), .sd.image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   display: block;
 }
 
-.hero-banner-svg {
+/* Studio Design Background Image Pseudo-element Rules */
+.sd[data-r-1_-2_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_01.jpg");
+}
+.sd[data-r-1_-1_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_02.jpg");
+}
+.sd[data-r-1_0_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_03.jpg");
+}
+.sd[data-r-1_1_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_04.jpg");
+}
+.sd[data-r-1_2_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_05.jpg");
+}
+.sd[data-r-1_3_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_06.jpg");
+}
+.sd[data-r-1_4_1_2_e85daafc-b4b3-4613-9bc9-b081034ba5be]::before {
+  background-image: url("/images/index_07.jpg");
+}
+
+/* Hero Content Text Overlay */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: block;
+  background: linear-gradient(
+    90deg,
+    rgba(30, 30, 58, 0.8) 0%,
+    rgba(30, 30, 58, 0.45) 55%,
+    rgba(0, 0, 0, 0.0) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 64px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.hero-content-box {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 12;
+}
+
+.hero-badge {
+  background-color: #FFD800;
+  color: #3C3C5A;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.hero-title {
+  font-size: 40px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  line-height: 1.5;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFD800;
+  color: #3C3C5A;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(255, 216, 0, 0.35);
+  transition: all 0.25s ease;
+  margin-top: 6px;
+}
+
+.hero-cta-btn:hover {
+  background-color: #FFFFFF;
+  color: #3C3C5A;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.45);
+}
+
+/* Controls */
+.hero-carousel-controls {
+  position: absolute;
+  bottom: 24px;
+  right: 48px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 12;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-arrow {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.hero-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-dot.active {
+  background-color: #FFD800;
+  width: 24px;
+  border-radius: 5px;
 }
 
 /* 即時災情 Ticker (對照 SSSSS 災情通報) */
@@ -608,7 +859,33 @@
 
 @media (max-width: 959px) {
   .hero-banner-section {
-    margin-top: -104px;
+    margin-top: 0px;
+    height: calc(100vh - 106px);
+  }
+  .hero-banner-wrapper {
+    /* height: 380px; */
+    height: calc(100vh - 106px);
+  }
+  .hero-overlay {
+    padding-top:10%;
+    padding-left: 32px;
+    /* padding: 0 32px; */
+    background: linear-gradient(
+    0deg,
+    rgba(30, 30, 58, 0.8) 0%,
+    rgba(30, 30, 58, 0.45) 55%,
+    rgba(0, 0, 0, 0.0) 100%
+  );
+  }
+  .hero-title {
+    font-size: 28px;
+  }
+  .hero-subtitle {
+    font-size: 15px;
+  }
+  .hero-carousel-controls {
+    right: 24px;
+    bottom: 16px;
   }
   .main-content-flow {
     padding: 32px;
@@ -616,9 +893,6 @@
   .cards-grid-4 {
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-  .hero-banner-wrapper {
-    height: 100vh;
   }
   .game-card-inner {
     flex-direction: column;
@@ -635,6 +909,20 @@
 }
 
 @media (max-width: 599px) {
+  .hero-banner-wrapper {
+    /* height: 320px; */
+    height: calc(100vh - 106px);
+  }
+  .hero-title {
+    font-size: 22px;
+  }
+  .hero-subtitle {
+    font-size: 13px;
+  }
+  .hero-cta-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
   .section-title {
     font-size: 20px;
   }

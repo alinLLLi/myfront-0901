@@ -508,12 +508,12 @@
 .site-header {
   height: 72px;
   width: 100%;
-  background-color: rgba(215, 215, 225, 0.85);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #3C3C5A;
-  box-shadow: none;
-  position: relative;
-  z-index: 10;
+  background-color: rgba(236, 236, 242, 0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Mobile Site Header (< 960px) */

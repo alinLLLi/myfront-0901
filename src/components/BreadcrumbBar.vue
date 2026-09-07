@@ -23,10 +23,14 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import { useNewsStore } from '@/stores/news'
+  import { useGetQuery as useGetKnowledge } from '@/quries/knowledge'
+  import { useGetQuery as useGetProducts } from '@/quries/product'
+  import { defaultNewsList, useNewsStore } from '@/stores/news'
 
   const route = useRoute()
   const newsStore = useNewsStore()
+  const { data: knowledgeData } = useGetKnowledge()
+  const { data: productsData } = useGetProducts()
 
   const pathMap: Record<string, string> = {
     '/': '首頁',
@@ -87,11 +91,15 @@
     const params = route.params as Record<string, any>
     if (route.path.startsWith('/news/') && params.id) {
       const rawId = String(params.id)
-      let found = newsStore.newsList.find(n => n.id === rawId || n.id === `news-${rawId}`)
+      const list = (knowledgeData.value && knowledgeData.value.length > 0)
+        ? knowledgeData.value
+        : (newsStore.newsList && newsStore.newsList.length > 0 ? newsStore.newsList : defaultNewsList)
+
+      let found = list.find((n: any) => n._id === rawId || n.id === rawId || n.id === `news-${rawId}`)
       if (!found) {
         const numericIndex = Number.parseInt(rawId, 10)
-        if (!Number.isNaN(numericIndex) && numericIndex > 0 && numericIndex <= newsStore.newsList.length) {
-          found = newsStore.newsList[numericIndex - 1]
+        if (!Number.isNaN(numericIndex) && numericIndex > 0 && numericIndex <= list.length) {
+          found = list[numericIndex - 1]
         }
       }
       const articleTitle = found ? found.title : (route.meta?.title || '災防知識詳細')
@@ -103,7 +111,10 @@
     }
     // 防災商品詳細頁 /product/:id 處理
     if (route.path.startsWith('/product/') && params.id) {
-      const prodTitle = document.title ? document.title.replace(' - 災防商城', '') : (route.meta?.title || '防災商品詳細')
+      const rawId = String(params.id)
+      const list = productsData.value || []
+      const found = list.find((p: any) => p._id === rawId)
+      const prodTitle = found ? found.name : (document.title ? document.title.replace(' - 災防商城', '') : (route.meta?.title || '防災商品詳細'))
       return [
         rootItem.value,
         { title: '災防商城', to: '/shop' },
@@ -157,6 +168,8 @@
   min-width: 0;
   display: inline-block;
   vertical-align: middle;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .text-grey-medium {
