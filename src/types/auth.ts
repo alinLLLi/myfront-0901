@@ -1,0 +1,17 @@
+export interface RegisterForm {
+  account: string
+  password: string
+  adminKey?: string
+}
+
+export interface LoginForm {
+  account: string
+  password: string
+}
+
+export interface LoginResponse {
+  accessToken: string
+  account: string
+  role: 'user' | 'admin'
+  cart: number
+}
