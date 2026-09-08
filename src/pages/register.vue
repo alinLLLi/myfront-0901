@@ -44,7 +44,6 @@
           density="comfortable"
           prepend-inner-icon="mdi-lock-check"
           :type="showPasswordConfirm ? 'text' : 'password'"
-<<<<<<< HEAD
           class="mb-3"
           @click:append-inner="showPasswordConfirm = !showPasswordConfirm"
         />
@@ -59,10 +58,6 @@
           density="comfortable"
           prepend-inner-icon="mdi-key-outline"
           class="mb-6"
-=======
-          class="mb-6"
-          @click:append-inner="showPasswordConfirm = !showPasswordConfirm"
->>>>>>> 4119bf19917c7c726180a8258c0f92fde6a6dcc7
         />
 
         <!-- 下方清除與送出按鈕 -->
@@ -132,10 +127,7 @@
       .string()
       .typeError('資料格式錯誤')
       .oneOf([yup.ref('password')], '密碼不一致'),
-<<<<<<< HEAD
     adminKey: yup.string().optional(),
-=======
->>>>>>> 4119bf19917c7c726180a8258c0f92fde6a6dcc7
   })
 
   const { defineField, handleSubmit, isSubmitting, errors, resetForm } = useForm({
@@ -144,20 +136,14 @@
       account: '',
       password: '',
       confirmPassword: '',
-<<<<<<< HEAD
       adminKey: '',
-=======
->>>>>>> 4119bf19917c7c726180a8258c0f92fde6a6dcc7
     },
   })
 
   const [account] = defineField('account')
   const [password] = defineField('password')
   const [confirmPassword] = defineField('confirmPassword')
-<<<<<<< HEAD
   const [adminKey] = defineField('adminKey')
-=======
->>>>>>> 4119bf19917c7c726180a8258c0f92fde6a6dcc7
 
   function clearForm () {
     resetForm()
@@ -168,10 +154,7 @@
       await register({
         account: values.account,
         password: values.password,
-<<<<<<< HEAD
         adminKey: values.adminKey,
-=======
->>>>>>> 4119bf19917c7c726180a8258c0f92fde6a6dcc7
       })
       snackbar.add({ text: '註冊成功', color: 'green' })
       router.push('/login')
