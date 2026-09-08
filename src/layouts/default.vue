@@ -12,9 +12,21 @@
 
     <!-- 1. Fixed Left Sidebar Main Menu (主選單 240px x 100vh) -->
     <aside class="sidebar-drawer" :class="{ 'mobile-open': isMobileMenuOpen }">
-      <!-- 1-1. Logo (寬度 130px，高度 130px) -->
-      <div class="logo-wrapper d-flex justify-center align-center py-2 pc-2" @click="handleNavClick('/')">
+      <!-- 1-1. Logo (僅於桌機版 >= 960px 顯示) -->
+      <div class="logo-wrapper d-none d-md-flex justify-center align-center py-2 pc-2" @click="handleNavClick('/')">
         <MascotLogo />
+      </div>
+
+      <!-- 1-1m. 手機版彈出主選單 Header (< 960px)：無 LOGO，加入關閉 ICON 按鈕 -->
+      <div class="mobile-drawer-header d-flex d-md-none align-center justify-content px-4 py-3">
+        <button
+          aria-label="關閉主選單"
+          class="mobile-close-btn d-flex align-center justify-center"
+          title="關閉主選單"
+          @click="isMobileMenuOpen = false"
+        >
+          <v-icon color="#3C3C5A" icon="mdi-close" size="24" />
+        </button>
       </div>
 
       <!-- 1-2 ~ 1-8. 前台主選單列表 -->
@@ -335,6 +347,24 @@
 .logo-wrapper {
   cursor: pointer;
   /* border-bottom: 1px solid #ECECF2; */
+}
+
+.mobile-drawer-header {
+  border-bottom: 1px solid #ECECF2;
+  min-height: 56px;
+}
+
+.mobile-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-close-btn:hover {
+  background-color: #ECECF2;
 }
 
 .sidebar-nav {
